@@ -1,0 +1,332 @@
+// import React, { useState } from "react";
+// import { useApp } from "../../context/AppContext";
+// import { PlusCircle, Edit, Trash2, X } from "lucide-react";
+
+// export default function AdminProductsPage() {
+//   const { products, deleteProduct, saveProduct } = useApp();
+
+//   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [editingProduct, setEditingProduct] = useState(null);
+
+//   const initialForm = {
+//     title: "",
+//     price: "",
+//     discount: 0,
+//     category: "Electronics",
+//     description: "",
+//     image: ""
+//   };
+
+//   const [formData, setFormData] = useState(initialForm);
+
+//   const openModal = (product = null) => {
+//     if (product) {
+//       setEditingProduct(product);
+//       setFormData(product);
+//     } else {
+//       setEditingProduct(null);
+//       setFormData(initialForm);
+//     }
+//     setIsModalOpen(true);
+//   };
+
+//   const handleSave = (e) => {
+//     e.preventDefault();
+//     saveProduct({
+//       ...formData,
+//       price: Number(formData.price),
+//       discount: Number(formData.discount)
+//     });
+//     setIsModalOpen(false);
+//   };
+
+//   return (
+//     <div className="animate-fade-in">
+
+//       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-10">
+//         <div>
+//           <h2 className="text-3xl font-black">Product Inventory</h2>
+//           <p className="text-gray-500">Manage your store's items</p>
+//         </div>
+
+//         <button
+//           onClick={() => openModal()}
+//           className="bg-indigo-600 text-white px-6 py-3 rounded-2xl font-bold hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-xl"
+//         >
+//           <PlusCircle className="w-5 h-5" /> Add New Product
+//         </button>
+//       </div>
+
+//       {/* Table */}
+//       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-x-auto">
+//         <table className="w-full text-left min-w-175">
+//           <thead className="bg-gray-50">
+//             <tr>
+//               <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500">Product</th>
+//               <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500">Category</th>
+//               <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500">Price</th>
+//               <th className="px-6 py-4 text-xs font-bold uppercase text-gray-500">Actions</th>
+//             </tr>
+//           </thead>
+
+//           <tbody>
+//             {products.map(product => (
+//               <tr key={product.id} className="hover:bg-gray-50">
+//                 <td className="px-6 py-4 font-bold">{product.title}</td>
+//                 <td className="px-6 py-4">{product.category}</td>
+//                 <td className="px-6 py-4 font-black text-indigo-600">
+//                   ${product.price}
+//                 </td>
+//                 <td className="px-6 py-4 flex gap-2">
+//                   <button onClick={() => openModal(product)}>
+//                     <Edit className="text-indigo-500" />
+//                   </button>
+//                   <button onClick={() => deleteProduct(product.id)}>
+//                     <Trash2 className="text-red-500" />
+//                   </button>
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       </div>
+
+//       {/* Modal */}
+//       {isModalOpen && (
+//         <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+//           <div className="bg-white w-full max-w-xl rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+//             <div className="flex justify-between mb-6">
+//               <h3 className="text-2xl font-black">
+//                 {editingProduct ? "Edit Product" : "Add Product"}
+//               </h3>
+//               <button onClick={() => setIsModalOpen(false)}>
+//                 <X />
+//               </button>
+//             </div>
+
+//             <form onSubmit={handleSave} className="space-y-4">
+//               <input
+//                 required
+//                 placeholder="Title"
+//                 className="w-full p-3 bg-gray-50 rounded-xl"
+//                 value={formData.title}
+//                 onChange={e => setFormData({ ...formData, title: e.target.value })}
+//               />
+
+//               <input
+//                 required
+//                 type="number"
+//                 placeholder="Price"
+//                 className="w-full p-3 bg-gray-50 rounded-xl"
+//                 value={formData.price}
+//                 onChange={e => setFormData({ ...formData, price: e.target.value })}
+//               />
+
+//               <textarea
+//                 required
+//                 rows="3"
+//                 placeholder="Description"
+//                 className="w-full p-3 bg-gray-50 rounded-xl"
+//                 value={formData.description}
+//                 onChange={e => setFormData({ ...formData, description: e.target.value })}
+//               />
+
+//               <button className="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold">
+//                 Save Product
+//               </button>
+//             </form>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+import React, { useState } from "react";
+import { useApp } from "../../context/AppContext";
+import { PlusCircle, Edit, Trash2, X } from "lucide-react";
+
+export default function AdminProductsPage() {
+  const { products, deleteProduct, saveProduct } = useApp();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+
+  const initialForm = {
+    title: "",
+    price: "",
+    discount: 0,
+    category: "Electronics",
+    description: "",
+    image: ""
+  };
+
+  const [formData, setFormData] = useState(initialForm);
+
+  const openModal = (product = null) => {
+    if (product) {
+      setEditingProduct(product);
+      setFormData(product);
+    } else {
+      setEditingProduct(null);
+      setFormData(initialForm);
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    saveProduct({
+      ...formData,
+      price: Number(formData.price),
+      discount: Number(formData.discount)
+    });
+    setIsModalOpen(false);
+  };
+
+  return (
+    <div className="animate-fade-in text-white">
+
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-12">
+        <div>
+          <h2 className="text-3xl md:text-4xl font-black text-yellow-400">
+            Product Inventory
+          </h2>
+          <p className="text-gray-400 mt-2">
+            Manage your store's products and pricing
+          </p>
+        </div>
+
+        <button
+          onClick={() => openModal()}
+          className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-6 py-3 rounded-2xl font-bold hover:scale-105 transition-all flex items-center gap-2 shadow-lg shadow-yellow-500/30"
+        >
+          <PlusCircle className="w-5 h-5" /> Add New Product
+        </button>
+      </div>
+
+      {/* Table */}
+      <div className="bg-gray-900 border border-gray-800 rounded-3xl shadow-xl overflow-x-auto">
+
+        <table className="w-full text-left min-w-175">
+
+          <thead className="bg-black border-b border-gray-800">
+            <tr>
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-400">
+                Product
+              </th>
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-400">
+                Category
+              </th>
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-400">
+                Price
+              </th>
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-400">
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-gray-800">
+            {products.map((product) => (
+              <tr
+                key={product.id}
+                className="hover:bg-gray-800/60 transition"
+              >
+                <td className="px-6 py-4 font-bold text-white">
+                  {product.title}
+                </td>
+
+                <td className="px-6 py-4 text-gray-300">
+                  {product.category}
+                </td>
+
+                <td className="px-6 py-4 font-black text-yellow-400">
+                  ${product.price}
+                </td>
+
+                <td className="px-6 py-4 flex gap-3">
+                  <button
+                    onClick={() => openModal(product)}
+                    className="text-yellow-400 hover:text-yellow-300 transition"
+                  >
+                    <Edit />
+                  </button>
+
+                  <button
+                    onClick={() => deleteProduct(product.id)}
+                    className="text-red-500 hover:text-red-400 transition"
+                  >
+                    <Trash2 />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+
+        </table>
+      </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+
+          <div className="bg-gray-900 border border-gray-800 w-full max-w-xl rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+
+            <div className="flex justify-between items-center mb-8">
+              <h3 className="text-2xl font-black text-yellow-400">
+                {editingProduct ? "Edit Product" : "Add Product"}
+              </h3>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-gray-400 hover:text-yellow-400 transition"
+              >
+                <X />
+              </button>
+            </div>
+
+            <form onSubmit={handleSave} className="space-y-6">
+
+              <input
+                required
+                placeholder="Title"
+                className="w-full p-4 bg-black text-white border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none transition"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+              />
+
+              <input
+                required
+                type="number"
+                placeholder="Price"
+                className="w-full p-4 bg-black text-white border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none transition"
+                value={formData.price}
+                onChange={(e) =>
+                  setFormData({ ...formData, price: e.target.value })
+                }
+              />
+
+              <textarea
+                required
+                rows="3"
+                placeholder="Description"
+                className="w-full p-4 bg-black text-white border border-gray-700 rounded-xl focus:border-yellow-500 focus:outline-none transition"
+                value={formData.description}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+              />
+
+              <button className="w-full bg-linear-to-r from-yellow-500 to-yellow-400 text-black py-4 rounded-xl font-bold hover:scale-[1.02] transition shadow-lg shadow-yellow-500/30">
+                Save Product
+              </button>
+
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
