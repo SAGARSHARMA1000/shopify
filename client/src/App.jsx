@@ -4,23 +4,13 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Loader from "./components/layout/Loader";
 import Router from "./components/router/Router";
+import HotDealAdModal from "./components/hotdeals/HotDealAdModal";
 import ToastContainer from "./components/common/ToastContainer";
 import { useApp } from "./context/AppContext";
 
 function MainApp() {
   const { isLoading } = useApp();
 
-  // return (
-  //   <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900">
-  //     <Navbar />
-  //     <main className="grow container mx-auto px-4 py-8 max-w-7xl">
-  //       {isLoading && <Loader />}
-  //       <Router />
-  //     </main>
-  //     <Footer />
-  //     <ToastContainer />
-  //   </div>
- // );
  return (
   <div className="relative min-h-screen bg-black text-white font-sans overflow-x-hidden">
 
@@ -33,12 +23,14 @@ function MainApp() {
 
       {/* Navbar */}
       <Navbar />
-
+      <HotDealAdModal/>
+     
       {/* Main Content */}
       <main className="grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 transition-all duration-300">
         {isLoading && <Loader />}
         <Router />
       </main>
+      
 
       {/* Footer */}
       <Footer />

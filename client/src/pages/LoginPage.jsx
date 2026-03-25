@@ -1,70 +1,38 @@
-// import React, { useState } from "react";
-// import { useApp } from "../context/AppContext";
-// import { Settings, User } from "lucide-react";
 
-// export default function LoginPage({ role }) {
-//   const { login, setCurrentPage } = useApp();
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     login(email, password, role);
-//   };
-
-//   return (
-//     <div className="max-w-md mx-auto py-12 animate-fade-in">
-//       <form onSubmit={handleSubmit} className="bg-white p-10 rounded-3xl shadow-2xl">
-//         <div className="text-center mb-10">
-//           {role === "admin" ? <Settings /> : <User />}
-//           <h2 className="text-3xl font-black">
-//             {role === "admin" ? "Admin Login" : "Customer Login"}
-//           </h2>
-//         </div>
-
-//         <input type="email" required placeholder="Email"
-//           className="w-full p-4 bg-gray-50 rounded-2xl mb-4"
-//           value={email}
-//           onChange={e => setEmail(e.target.value)}
-//         />
-
-//         <input type="password" required placeholder="Password"
-//           className="w-full p-4 bg-gray-50 rounded-2xl mb-6"
-//           value={password}
-//           onChange={e => setPassword(e.target.value)}
-//         />
-
-//         <button className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold">
-//           Sign In
-//         </button>
-
-//         <div className="text-center mt-6">
-//           <button
-//             type="button"
-//             onClick={() => setCurrentPage(role === "admin" ? "login" : "admin-login")}
-//             className="text-indigo-600 font-bold"
-//           >
-//             Switch to {role === "admin" ? "Customer" : "Admin"}
-//           </button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// }
 import React, { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { Settings, User, Mail, Lock } from "lucide-react";
+import { loginUser } from "../api/authApi";
 
 export default function LoginPage({ role }) {
   const { login, setCurrentPage } = useApp();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login(email, password, role);
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  await login(email, password, role); // ✅ use context only
+};
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
 
+//   try {
+//     const { data } = await loginUser({
+//       email,
+//       password,
+//       role
+//     });
+
+//     localStorage.setItem("userInfo", JSON.stringify(data));
+//     alert("Login successful");
+//      // ✅ set user from backend response
+//     setUser(data);
+//     setCurrentPage("home");
+    
+//   } catch (error) {
+//     alert(error.response?.data?.message || "Login failed");
+//   }
+// };
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 bg-linear-to-br from-black via-gray-900 to-black">
 
@@ -137,7 +105,17 @@ export default function LoginPage({ role }) {
             Switch to {role === "admin" ? "Customer" : "Admin"}
           </button>
         </div>
+        <p className="text-center text-sm text-gray-400 mt-6">
+  Don't have an account?
+  <button
+    onClick={() => setCurrentPage("signup")}
+    className="text-yellow-400 ml-1 hover:underline"
+  >
+    Sign Up
+  </button>
+</p>
       </form>
+      
     </div>
   );
 }

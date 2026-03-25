@@ -93,7 +93,8 @@ export default function Footer() {
             Register for free & get exclusive offers
           </h3>
 
-          <button className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-8 py-3 rounded-full font-bold hover:scale-105 transition shadow-lg shadow-yellow-500/30">
+          <button   onClick={() => setCurrentPage("signup")}
+           className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-8 py-3 rounded-full font-bold hover:scale-105 transition shadow-lg shadow-yellow-500/30">
             SIGN UP
           </button>
 

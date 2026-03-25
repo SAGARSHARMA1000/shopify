@@ -199,6 +199,7 @@ import {
   Phone,
   Tag
 } from "lucide-react";
+import logo from "../../assets/rma-logo.jpeg";
 
 export default function Navbar() {
   const {
@@ -207,7 +208,7 @@ export default function Navbar() {
     setCurrentPage,
     logout,
     searchQuery,
-    setSearchQuery
+    setSearchQuery,openHotDealAd
   } = useApp();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -223,8 +224,14 @@ export default function Navbar() {
           className="flex items-center gap-2 cursor-pointer group"
           onClick={() => setCurrentPage("home")}
         >
-          <div className="bg-linear-to-r from-yellow-500 to-yellow-400 p-2 rounded-lg shadow-md">
-            <ShoppingBag className="text-black w-6 h-6" />
+          <div className=" p-2 rounded-lg shadow-md">
+            
+         {/* // <div className="bg-linear-to-r from-yellow-500 to-yellow-400 p-2 rounded-lg shadow-md"> */}
+            <img
+      src={logo}
+      alt="RMA Logo"
+      className="w-8 h-8 object-contain group-hover:scale-110 transition-transform duration-200"
+    />
           </div>
           <span className="text-xl font-bold text-yellow-400 tracking-wide">
             RMA
@@ -240,7 +247,7 @@ export default function Navbar() {
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
-              setCurrentPage("home");
+              //setCurrentPage("home");
             }}
           />
           <Search className="absolute left-3 top-2.5 w-5 h-5 text-yellow-500" />
@@ -264,7 +271,7 @@ export default function Navbar() {
           </button>
 
           <button
-            onClick={() => setCurrentPage("home")}
+            onClick={openHotDealAd}
             className="flex items-center gap-1 text-yellow-500 font-semibold"
           >
             <Tag className="w-4 h-4" />
@@ -302,7 +309,7 @@ export default function Navbar() {
           </div>
 
           {/* Auth */}
-          {user ? (
+          {/* {user ? (
             <div className="flex items-center gap-4 pl-4 border-l border-gray-700">
               <button
                 onClick={() => setCurrentPage("my-orders")}
@@ -318,13 +325,53 @@ export default function Navbar() {
               </button>
             </div>
           ) : (
-            <button
+            {/* <button
               onClick={() => setCurrentPage("login")}
               className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-5 py-2 rounded-full font-bold hover:scale-105 transition shadow-lg"
             >
               Login
-            </button>
-          )}
+            </button> */}
+            
+            
+          {/* )} */} 
+          {user ? (
+  <div className="flex items-center gap-4 pl-4 border-l border-gray-700">
+    <button
+      onClick={() => setCurrentPage("userDashboard")}
+      className="hover:text-yellow-400 transition"
+    >
+      <User className="w-6 h-6" />
+    </button>
+
+    <button
+      onClick={logout}
+      className="text-red-500 hover:text-red-400"
+    >
+      <LogOut className="w-5 h-5" />
+    </button>
+  </div>
+) : (
+  <div className="flex items-center gap-3">
+
+    {/* Login */}
+    <button
+      onClick={() => setCurrentPage("login")}
+      className="px-4 py-2 border border-yellow-500 text-yellow-400 rounded-full font-semibold hover:bg-yellow-500 hover:text-black transition"
+    >
+      Login
+    </button>
+
+    {/* Signup */}
+    <button
+      onClick={() => setCurrentPage("signup")}
+      className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-5 py-2 rounded-full font-bold hover:scale-105 transition shadow-lg"
+    >
+      Sign Up
+    </button>
+
+  </div>
+)}
+
         </div>
 
         {/* Mobile Menu Button */}
@@ -369,7 +416,7 @@ export default function Navbar() {
           </button>
 
           {user && (
-            <button onClick={() => setCurrentPage("my-orders")} className="block w-full text-left">
+            <button onClick={() => setCurrentPage("userDashboard")} className="block w-full text-left">
               My Orders
             </button>
           )}
@@ -394,6 +441,7 @@ export default function Navbar() {
             >
               Login
             </button>
+            
           )}
         </div>
       )}

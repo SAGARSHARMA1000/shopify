@@ -139,11 +139,14 @@
 //     </div>
 //   );
 // }
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import { useApp } from "../context/AppContext";
 import { getEffectivePrice } from "../utils/helpers";
 import { Filter, Eye, Tag, Plus, Search, Sparkles } from "lucide-react";
 import logo from "../assets/rma-logo.jpeg";
+import { fetchProducts } from "../api/productApi";
+
+
 
 export default function HomePage() {
   const {
@@ -157,6 +160,16 @@ export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const categories = ["All", ...new Set(products.map(p => p.category))];
+   //const [products, setProducts] = useState([]);
+  
+// useEffect(() => {
+//   const loadProducts = async () => {
+//     const { data } = await fetchProducts();
+//     setProducts(data);
+//   };
+
+//   loadProducts();
+// }, []);
 
   const filteredProducts = products.filter(p => {
     const matchesCategory =
@@ -199,7 +212,7 @@ export default function HomePage() {
             </p>
 
             <button
-              onClick={() => setCurrentPage("home")}
+              onClick={() => setCurrentPage("hotdeals")}
               className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-8 py-3 rounded-full font-bold text-lg hover:scale-105 transition-all shadow-lg shadow-yellow-500/40"
             >
               Explore Collection
@@ -261,7 +274,8 @@ export default function HomePage() {
 
                 <button
                   onClick={() => {
-                    setSelectedProductId(product.id);
+                    setSelectedProductId(product._id);
+                    console.log("Clicked ID:", product._id);
                     setCurrentPage("product-details");
                   }}
                   className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center"
@@ -292,11 +306,11 @@ export default function HomePage() {
                   <div>
                     {product.discount > 0 && (
                       <span className="text-gray-500 line-through text-sm block">
-                        ${product.price}
+                        ₹{product.price}
                       </span>
                     )}
                     <span className="text-2xl font-black text-yellow-400">
-                      ${effectivePrice}
+                      ₹{effectivePrice}
                     </span>
                   </div>
 

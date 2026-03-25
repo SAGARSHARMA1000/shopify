@@ -29,6 +29,21 @@ const productSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    hotdeal: {
+      type: Boolean,
+      default: false
+},
+isCombo: {
+  type: Boolean,
+  default: false
+},
+
+comboProducts: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product"
+  }
+]
   },
   {
     timestamps: true,

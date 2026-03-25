@@ -126,7 +126,7 @@ export default function CartPage() {
 
           return (
             <div
-              key={item.id}
+              key={item._id}
               className="bg-gray-900 border border-gray-800 p-6 rounded-2xl shadow-lg flex flex-col sm:flex-row items-center gap-6 hover:border-yellow-500/30 transition"
             >
               <img
@@ -140,14 +140,14 @@ export default function CartPage() {
                   {item.title}
                 </h4>
                 <p className="text-yellow-400 font-black text-xl mt-2">
-                  ${effectivePrice}
+                  ₹{effectivePrice}
                 </p>
               </div>
 
               {/* Quantity Controls */}
               <div className="flex items-center gap-3 bg-black border border-gray-700 px-4 py-2 rounded-xl">
                 <button
-                  onClick={() => updateCartQuantity(item.id, -1)}
+                  onClick={() => updateCartQuantity(item._id, -1)}
                   className="text-yellow-400 hover:scale-110 transition"
                 >
                   <MinusCircle />
@@ -158,7 +158,7 @@ export default function CartPage() {
                 </span>
 
                 <button
-                  onClick={() => updateCartQuantity(item.id, 1)}
+                  onClick={() => updateCartQuantity(item._id, 1)}
                   className="text-yellow-400 hover:scale-110 transition"
                 >
                   <PlusCircle />
@@ -167,7 +167,7 @@ export default function CartPage() {
 
               {/* Remove Button */}
               <button
-                onClick={() => removeFromCart(item.id)}
+                onClick={() => removeFromCart(item._id)}
                 className="text-red-500 hover:text-red-400 transition"
               >
                 <Trash2 />
@@ -188,7 +188,7 @@ export default function CartPage() {
           <div className="flex justify-between mb-8 text-gray-300">
             <span>Total</span>
             <span className="text-3xl font-black text-white">
-              ${cartTotal.toFixed(2)}
+              ₹{cartTotal.toFixed(2)}
             </span>
           </div>
 

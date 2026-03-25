@@ -1,30 +1,4 @@
-// export const addProduct = async (req, res) => {
-//   const product = await Product.create(req.body);
-//   res.json(product);
-// };
 
-// export const getProducts = async (req, res) => {
-//   const { keyword, min, max, category } = req.query;
-
-//   let query = {};
-
-//   if (keyword) {
-//     query.title = { $regex: keyword, $options: "i" };
-//   }
-
-//   if (category) {
-//     query.category = category;
-//   }
-
-//   if (min || max) {
-//     query.price = {};
-//     if (min) query.price.$gte = Number(min);
-//     if (max) query.price.$lte = Number(max);
-//   }
-
-//   const products = await Product.find(query);
-//   res.json(products);
-// };
 import Product from "../models/Product.js";
 import cloudinary from "../config/cloudinary.js";
 
@@ -71,7 +45,7 @@ export const getProducts = async (req, res) => {
 // =============================
 export const getSingleProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id) .populate("comboProducts", "title price image");;
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -88,19 +62,115 @@ export const getSingleProduct = async (req, res) => {
 // @desc    Add new product (Admin)
 // @route   POST /api/products
 // =============================
-export const addProduct = async (req, res) => {
-  try {
-    const { title, price, discount, category, description, image } = req.body;
+// export const addProduct = async (req, res) => {
+//     console.log("Create product request body:", req.body);
+//   console.log("Request user:", req.user);
+//   try {
+//     const { title, price, discount, category, description, image } = req.body;
 
+//     let imageUrl = "";
+
+//     // Upload to Cloudinary if image provided
+//     if (image) {
+//       const uploadResponse = await cloudinary.uploader.upload(image, {
+//         folder: "rma-products",
+//       });
+
+//       imageUrl = uploadResponse.secure_url;
+//     }
+
+//     const product = new Product({
+//       title,
+//       price,
+//       discount,
+//       category,
+//       description,
+//       image: imageUrl,
+//       createdBy: req.user._id,
+//     });
+
+//     const createdProduct = await product.save();
+
+//     res.status(201).json(createdProduct);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+// export const addProduct = async (req, res) => {
+
+//   console.log("BODY:", req.body);
+//   console.log("FILE:", req.file);
+
+//   try {
+
+//     const { title, price, discount, category, description } = req.body;
+
+//     let imageUrl = "";
+
+//     if (req.file) {
+
+//       const uploadResponse = await cloudinary.uploader.upload(
+//         `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
+//         { folder: "rma-products" }
+//       );
+
+//       imageUrl = uploadResponse.secure_url;
+//     }
+
+//     const product = new Product({
+//       title,
+//       price,
+//       discount,
+//       category,
+//       description,
+//       image: imageUrl,
+//       createdBy: req.user._id
+//     });
+
+//     const createdProduct = await product.save();
+
+//     res.status(201).json(createdProduct);
+
+//   } catch (error) {
+
+//     console.log("Product creation error:", error);
+
+//     res.status(500).json({
+//       message: error.message
+//     });
+
+//   }
+
+// };
+
+
+export const addProduct = async (req, res) => {
+ // console.log("BODY:", req.body);
+ // console.log("FILE:", req.file);
+
+  try {
+    const { title, price, discount, category, description,hotdeal,isCombo } = req.body;
+     const comboProducts = req.body.comboProducts
+  ? JSON.parse(req.body.comboProducts)
+  : [];
     let imageUrl = "";
 
-    // Upload to Cloudinary if image provided
-    if (image) {
-      const uploadResponse = await cloudinary.uploader.upload(image, {
-        folder: "rma-products",
+    if (req.file) {
+
+      const result = await new Promise((resolve, reject) => {
+
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "rma-products" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+
+        stream.end(req.file.buffer);
       });
 
-      imageUrl = uploadResponse.secure_url;
+      imageUrl = result.secure_url;
     }
 
     const product = new Product({
@@ -109,6 +179,9 @@ export const addProduct = async (req, res) => {
       discount,
       category,
       description,
+      hotdeal:hotdeal==="true",
+      isCombo:isCombo==="true",
+      comboProducts,
       image: imageUrl,
       createdBy: req.user._id,
     });
@@ -116,16 +189,53 @@ export const addProduct = async (req, res) => {
     const createdProduct = await product.save();
 
     res.status(201).json(createdProduct);
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log("Product creation error:", error);
+
+    res.status(500).json({
+      message: error.message
+    });
   }
 };
-
 
 // =============================
 // @desc    Update product (Admin)
 // @route   PUT /api/products/:id
 // =============================
+// export const updateProduct = async (req, res) => {
+//   try {
+//     const product = await Product.findById(req.params.id);
+
+//     if (!product) {
+//       return res.status(404).json({ message: "Product not found" });
+//     }
+
+//     const { title, price, discount, category, description, image } = req.body;
+
+//     product.title = title || product.title;
+//     product.price = price || product.price;
+//     product.discount = discount ?? product.discount;
+//     product.category = category || product.category;
+//     product.description = description || product.description;
+
+//     // If new image uploaded
+//     if (image) {
+//       const uploadResponse = await cloudinary.uploader.upload(image, {
+//         folder: "rma-products",
+//       });
+
+//       product.image = uploadResponse.secure_url;
+//     }
+
+//     const updatedProduct = await product.save();
+
+//     res.json(updatedProduct);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 export const updateProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -134,32 +244,56 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    const { title, price, discount, category, description, image } = req.body;
+    const {
+      title,
+      price,
+      discount,
+      category,
+      description,
+      hotdeal,
+      isCombo,
+    } = req.body;
 
+    const comboProducts = req.body.comboProducts
+      ? JSON.parse(req.body.comboProducts)
+      : product.comboProducts;
+
+    // ✅ update fields
     product.title = title || product.title;
     product.price = price || product.price;
     product.discount = discount ?? product.discount;
     product.category = category || product.category;
     product.description = description || product.description;
+    product.hotdeal = hotdeal === "true";
+    product.isCombo = isCombo === "true";
+    product.comboProducts = comboProducts;
 
-    // If new image uploaded
-    if (image) {
-      const uploadResponse = await cloudinary.uploader.upload(image, {
-        folder: "rma-products",
+    // ✅ FIX: handle image from multer
+    if (req.file) {
+      const result = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "rma-products" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+
+        stream.end(req.file.buffer);
       });
 
-      product.image = uploadResponse.secure_url;
+      product.image = result.secure_url;
     }
 
     const updatedProduct = await product.save();
 
     res.json(updatedProduct);
+
   } catch (error) {
+    console.log("UPDATE ERROR:", error); // 🔥 debug
     res.status(500).json({ message: error.message });
   }
 };
-
-
 // =============================
 // @desc    Delete product (Admin)
 // @route   DELETE /api/products/:id
@@ -177,5 +311,55 @@ export const deleteProduct = async (req, res) => {
     res.json({ message: "Product removed successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+// GET ALL HOT DEAL PRODUCTS
+export const getHotDeals = async (req, res) => {
+  try {
+
+    const products = await Product.find({ hotdeal: true })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      products
+    });
+
+  } catch (error) {
+    
+    console.error("Hot deals error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch hot deals"
+    });
+
+  }
+};
+
+
+// GET LATEST HOT DEAL (ADVERTISEMENT)
+export const getLatestHotDeal = async (req, res) => {
+  try {
+
+    const product = await Product
+      .findOne({ hotdeal: true })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      product
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch latest hot deal"
+    });
+
   }
 };

@@ -51,6 +51,7 @@ const orderSchema = mongoose.Schema(
 
     shippingAddress: {
       name: String,
+      phone:String,
       address: String,
       city: String,
       zip: String,
@@ -63,7 +64,7 @@ const orderSchema = mongoose.Schema(
 
     paymentMethod: {
       type: String,
-      enum: ["COD", "Online"],
+      enum: ["COD", "ONLINE"],
     },
 
     paymentStatus: {
@@ -71,6 +72,7 @@ const orderSchema = mongoose.Schema(
       enum: ["Pending", "Paid"],
       default: "Pending",
     },
+    screenshot:String,
 
     orderStatus: {
       type: String,

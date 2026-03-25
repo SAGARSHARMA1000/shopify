@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  placeOrderCOD,
+  placeOrder,
   createOnlinePayment,
   verifyOnlinePayment,
   getMyOrders,
@@ -9,12 +9,12 @@ import {
 
 import { protect } from "../middleware/authMiddleware.js";
 import { adminOnly } from "../middleware/roleMiddleware.js";
-
+import upload from "../middleware/uploadMiddleware.js";
 const router = express.Router();
 
 // Place COD Order
 // POST /api/orders/cod
-router.post("/cod", protect, placeOrderCOD);
+router.post("/", protect,upload.single("screenshot"), placeOrder);
 
 // Create Razorpay Order
 // POST /api/orders/online

@@ -1,54 +1,124 @@
+
 // import React from "react";
 // import { useApp } from "../context/AppContext";
 // import { getEffectivePrice } from "../utils/helpers";
-// import { X, CheckCircle, ShoppingCart, Package, ChevronRight } from "lucide-react";
+// import {
+//   X,
+//   CheckCircle,
+//   ShoppingCart,
+//   Package,
+//   ChevronRight
+// } from "lucide-react";
 
 // export default function ProductDetailsPage() {
-//   const { products, selectedProductId, addToCart, setCurrentPage } = useApp();
-//   const product = products.find(p => p.id === selectedProductId);
+//   const { products, selectedProductId, addToCart, setCurrentPage } =
+//     useApp();
+
+//   const product = products.find(
+//     (p) => p._id === selectedProductId
+//   );
 
 //   if (!product) {
 //     setCurrentPage("home");
 //     return null;
 //   }
 
-//   const effectivePrice = getEffectivePrice(product.price, product.discount);
+//   const effectivePrice = getEffectivePrice(
+//     product.price,
+//     product.discount
+//   );
 
 //   return (
-//     <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 animate-fade-in">
+//     <div className="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden shadow-2xl animate-fade-in text-white">
+
 //       <div className="grid grid-cols-1 md:grid-cols-2">
 
-//         <div className="h-[400px] md:h-[600px] bg-gray-100 relative">
-//           <img src={product.image} className="w-full h-full object-cover" alt={product.title} />
+//         {/* Image Section */}
+//         <div className="h-100 md:h-150 bg-black relative">
 
+//           <img
+//             src={product.image}
+//             className="w-full h-full object-cover"
+//             alt={product.title}
+//           />
+
+//           {/* Back Button */}
 //           <button
 //             onClick={() => setCurrentPage("home")}
-//             className="absolute top-4 left-4 bg-white/80 p-2 rounded-full shadow-md"
+//             className="absolute top-4 left-4 bg-black/60 backdrop-blur-md p-2 rounded-full border border-gray-700 hover:border-yellow-500 transition"
 //           >
-//             <X className="w-6 h-6 text-gray-700" />
+//             <X className="w-6 h-6 text-yellow-400" />
 //           </button>
+
+//           {/* Discount Badge */}
+//           {product.discount > 0 && (
+//             <div className="absolute top-4 right-4 bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-4 py-2 rounded-full font-bold shadow-lg">
+//               -{product.discount}% OFF
+//             </div>
+//           )}
 //         </div>
 
-//         <div className="p-8 md:p-16 flex flex-col">
-//           <h1 className="text-4xl font-extrabold mb-6">{product.title}</h1>
-//           <p className="text-gray-600 text-lg mb-8">{product.description}</p>
+//         {/* Details Section */}
+//         <div className="p-8 md:p-16 flex flex-col justify-center">
 
-//           <div className="bg-gray-50 p-6 rounded-2xl mb-8 flex justify-between">
-//             <span className="text-4xl font-black text-indigo-600">${effectivePrice}</span>
+//           {/* Category */}
+//           <div className="flex items-center gap-2 text-yellow-400 mb-4 text-sm font-bold uppercase tracking-wider">
+//             <Package className="w-4 h-4" />
+//             {product.category}
 //           </div>
 
+//           {/* Title */}
+//           <h1 className="text-3xl md:text-4xl font-extrabold mb-6">
+//             {product.title}
+//           </h1>
+
+//           {/* Description */}
+//           <p className="text-gray-400 text-lg mb-10 leading-relaxed">
+//             {product.description}
+//           </p>
+
+//           {/* Price Box */}
+//           <div className="bg-black border border-gray-700 p-6 rounded-2xl mb-10 flex items-center justify-between">
+
+//             <div>
+//               {product.discount > 0 && (
+//                 <span className="text-gray-500 line-through text-lg mr-3">
+//                   ₹{product.price}
+//                 </span>
+//               )}
+
+//               <span className="text-4xl font-black text-yellow-400">
+//                 ₹{effectivePrice}
+//               </span>
+//             </div>
+
+//             <div className="flex items-center gap-2 text-green-400 font-bold">
+//               <CheckCircle className="w-5 h-5" />
+//               In Stock
+//             </div>
+//           </div>
+
+//           {/* Add to Cart Button */}
 //           <button
 //             onClick={() => addToCart(product)}
-//             className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-xl hover:bg-indigo-700 transition-all shadow-xl"
+//             className="w-full bg-linear-to-r from-yellow-500 to-yellow-400 text-black py-4 rounded-2xl font-bold text-xl hover:scale-[1.02] transition shadow-lg shadow-yellow-500/30"
 //           >
-//             <ShoppingCart className="inline mr-2" /> Add to Cart
+//             <ShoppingCart className="inline mr-2" />
+//             Add to Cart
 //           </button>
+
+//           {/* Extra Info */}
+//           <div className="mt-8 flex items-center gap-3 text-gray-400 text-sm">
+//             <ChevronRight className="w-4 h-4 text-yellow-400" />
+//             Fast Shipping & Secure Checkout
+//           </div>
+
 //         </div>
 //       </div>
 //     </div>
 //   );
 // }
-import React from "react";
+import React,{useEffect} from "react";
 import { useApp } from "../context/AppContext";
 import { getEffectivePrice } from "../utils/helpers";
 import {
@@ -56,34 +126,59 @@ import {
   CheckCircle,
   ShoppingCart,
   Package,
-  ChevronRight
+  ChevronRight,
+  Flame,
+  Layers
 } from "lucide-react";
 
 export default function ProductDetailsPage() {
-  const { products, selectedProductId, addToCart, setCurrentPage } =
+
+  const { products, selectedProductId,  selectedProduct,
+    getProductById, addToCart, setCurrentPage } =
     useApp();
+  useEffect(() => {
+  //console.log("Selected Product:", selectedProduct);
+}, [selectedProduct]);
+   useEffect(() => {
+    if (selectedProductId) {
+      getProductById(selectedProductId);
+    }
+  }, [selectedProductId]);
 
-  const product = products.find(
-    (p) => p.id === selectedProductId
+  const product = selectedProduct;
+   // console.log(product);
+  // if (!product) {
+  //   setCurrentPage("home");
+  //   return null;
+  // }
+if (!product) {
+  return (
+    <div className="text-white text-center py-20">
+      Loading product...
+    </div>
   );
-
-  if (!product) {
-    setCurrentPage("home");
-    return null;
-  }
-
+}
   const effectivePrice = getEffectivePrice(
     product.price,
     product.discount
   );
 
+  // Combo calculations
+  const comboItems = product.comboProducts || [];
+  const totalOriginal = comboItems.reduce(
+    (sum, item) => sum + (item?.price || 0),
+    0
+  );
+
+  const savings = totalOriginal - product.price;
+
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden shadow-2xl animate-fade-in text-white">
+    <div className="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden shadow-2xl text-white">
 
-      <div className="grid grid-cols-1 md:grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
 
-        {/* Image Section */}
-        <div className="h-100 md:h-150 bg-black relative">
+        {/* IMAGE SECTION */}
+        <div className="relative h-75 sm:h-100 lg:h-137.5 bg-black">
 
           <img
             src={product.image}
@@ -91,75 +186,132 @@ export default function ProductDetailsPage() {
             alt={product.title}
           />
 
-          {/* Back Button */}
+          {/* Back */}
           <button
             onClick={() => setCurrentPage("home")}
-            className="absolute top-4 left-4 bg-black/60 backdrop-blur-md p-2 rounded-full border border-gray-700 hover:border-yellow-500 transition"
+            className="absolute top-4 left-4 bg-black/60 p-2 rounded-full border border-gray-700 hover:border-yellow-500"
           >
-            <X className="w-6 h-6 text-yellow-400" />
+            <X className="w-5 h-5 text-yellow-400" />
           </button>
 
-          {/* Discount Badge */}
-          {product.discount > 0 && (
-            <div className="absolute top-4 right-4 bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-4 py-2 rounded-full font-bold shadow-lg">
-              -{product.discount}% OFF
-            </div>
-          )}
+          {/* Badges */}
+          <div className="absolute top-4 right-4 flex flex-col gap-2">
+
+            {product.discount > 0 && (
+              <span className="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-bold">
+                -{product.discount}% OFF
+              </span>
+            )}
+
+            {product.hotdeal && (
+              <span className="bg-red-500 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1">
+                <Flame className="w-4 h-4" /> Hot Deal
+              </span>
+            )}
+
+            {product.isCombo && (
+              <span className="bg-purple-500 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1">
+                <Layers className="w-4 h-4" /> Combo
+              </span>
+            )}
+
+          </div>
         </div>
 
-        {/* Details Section */}
-        <div className="p-8 md:p-16 flex flex-col justify-center">
+        {/* DETAILS SECTION */}
+        <div className="p-6 sm:p-10 lg:p-14 flex flex-col">
 
           {/* Category */}
-          <div className="flex items-center gap-2 text-yellow-400 mb-4 text-sm font-bold uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-yellow-400 text-xs sm:text-sm font-bold uppercase mb-3">
             <Package className="w-4 h-4" />
             {product.category}
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl md:text-4xl font-extrabold mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-4">
             {product.title}
           </h1>
 
           {/* Description */}
-          <p className="text-gray-400 text-lg mb-10 leading-relaxed">
+          <p className="text-gray-400 text-sm sm:text-base mb-6">
             {product.description}
           </p>
 
-          {/* Price Box */}
-          <div className="bg-black border border-gray-700 p-6 rounded-2xl mb-10 flex items-center justify-between">
+          {/* COMBO SECTION */}
+          {product.isCombo && comboItems.length > 0 && (
+            <div className="mb-8">
+
+              <h3 className="text-lg font-bold text-yellow-400 mb-3">
+                Combo Includes ({comboItems.length} items)
+              </h3>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+
+                {comboItems.map((item) => (
+                  <div
+                    key={item._id}
+                    className="bg-black border border-gray-700 rounded-xl p-2 text-center"
+                  >
+                    <img
+                      src={item.image}
+                      className="w-full h-20 object-cover rounded-md mb-2"
+                    />
+
+                    <p className="text-xs font-semibold line-clamp-1">
+                      {item.title}
+                    </p>
+
+                    <p className="text-yellow-400 text-xs font-bold">
+                      ₹{item.price}
+                    </p>
+                  </div>
+                ))}
+
+              </div>
+
+              {/* Savings */}
+              <div className="mt-3 text-green-400 font-bold text-sm">
+                You Save ₹{savings}
+              </div>
+
+            </div>
+          )}
+
+          {/* PRICE BOX */}
+          <div className="bg-black border border-gray-700 p-5 rounded-2xl mb-6 flex justify-between items-center">
 
             <div>
               {product.discount > 0 && (
-                <span className="text-gray-500 line-through text-lg mr-3">
-                  ${product.price}
+                <span className="text-gray-500 line-through mr-2">
+                  ₹{product.price}
                 </span>
               )}
 
-              <span className="text-4xl font-black text-yellow-400">
-                ${effectivePrice}
+              <span className="text-3xl font-black text-yellow-400">
+                ₹{effectivePrice}
               </span>
             </div>
 
-            <div className="flex items-center gap-2 text-green-400 font-bold">
-              <CheckCircle className="w-5 h-5" />
+            <div className="flex items-center gap-2 text-green-400 text-sm font-bold">
+              <CheckCircle className="w-4 h-4" />
               In Stock
             </div>
+
           </div>
 
-          {/* Add to Cart Button */}
+          {/* BUTTON */}
           <button
             onClick={() => addToCart(product)}
-            className="w-full bg-linear-to-r from-yellow-500 to-yellow-400 text-black py-4 rounded-2xl font-bold text-xl hover:scale-[1.02] transition shadow-lg shadow-yellow-500/30"
+            className="w-full bg-yellow-500 text-black py-3 rounded-xl font-bold text-lg hover:bg-yellow-400 transition"
           >
             <ShoppingCart className="inline mr-2" />
             Add to Cart
           </button>
 
-          {/* Extra Info */}
-          <div className="mt-8 flex items-center gap-3 text-gray-400 text-sm">
+          {/* INFO */}
+          <div className="mt-5 text-gray-400 text-xs flex items-center gap-2">
             <ChevronRight className="w-4 h-4 text-yellow-400" />
-            Fast Shipping & Secure Checkout
+            Fast Delivery | Secure Checkout
           </div>
 
         </div>
