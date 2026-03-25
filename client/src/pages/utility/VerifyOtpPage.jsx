@@ -80,45 +80,106 @@ export default function VerifyOtpPage({ email }) {
     }
   };
 
+  // const verifyOTP = async () => {
+  //   const finalOtp = otp.join("");
+  //   const email = localStorage.getItem("verifyEmail");
+  //   if (finalOtp.length !== 6) {
+  //     alert("Enter complete OTP");
+  //     return;
+  //   }
+
+  //   try {
+  //     setLoading(true);
+
+  //     await axios.post(
+  //       "http://localhost:5000/api/auth/verify-otp",
+  //       { email, otp: finalOtp }
+  //     );
+
+  //     alert("✅ Email Verified");
+
+  //     setCurrentPage("login");
+
+  //   } catch (error) {
+  //     alert(error.response?.data?.message || "Verification failed");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const verifyOTP = async () => {
-    const finalOtp = otp.join("");
-    const email = localStorage.getItem("verifyEmail");
-    if (finalOtp.length !== 6) {
-      alert("Enter complete OTP");
-      return;
-    }
+  const finalOtp = otp.join("").trim();
+  const email = localStorage.getItem("verifyEmail");
 
-    try {
-      setLoading(true);
+  if (!email) {
+    alert("Session expired. Please register again.");
+    return;
+  }
 
-      await axios.post(
-        "http://localhost:5000/api/auth/verify-otp",
-        { email, otp: finalOtp }
-      );
+  if (finalOtp.length !== 6) {
+    alert("Enter complete 6-digit OTP");
+    return;
+  }
 
-      alert("✅ Email Verified");
+  try {
+    setLoading(true);
 
-      setCurrentPage("login");
+    const { data } = await API.post("/auth/verify-otp", {
+      email,
+      otp: finalOtp
+    });
 
-    } catch (error) {
-      alert(error.response?.data?.message || "Verification failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+    alert(data.message || "Email verified successfully");
 
-  const resendOTP = async () => {
-    try {
-      await axios.post(
-        "http://localhost:5000/api/auth/resend-otp",
-        { email }
-      );
-      alert("OTP resent");
-    } catch (err) {
-      alert("Failed to resend OTP");
-    }
-  };
+    // ✅ cleanup
+    localStorage.removeItem("verifyEmail");
 
+    // ✅ navigate properly (better than setCurrentPage)
+    setCurrentPage("login");
+
+  } catch (error) {
+    alert(error.response?.data?.message || "Verification failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
+  // const resendOTP = async () => {
+  //   try {
+  //     await axios.post(
+  //       "http://localhost:5000/api/auth/resend-otp",
+  //       { email }
+  //     );
+  //     alert("OTP resent");
+  //   } catch (err) {
+  //     alert("Failed to resend OTP");
+  //   }
+  // };
+const [resending, setResending] = useState(false);
+
+const resendOTP = async () => {
+  const email = localStorage.getItem("verifyEmail");
+
+  if (!email) {
+    alert("Session expired. Please register again.");
+    return;
+  }
+
+  try {
+    setResending(true);
+
+    const { data } = await API.post("/auth/resend-otp", {
+      email
+    });
+
+    alert(data.message || "OTP resent successfully");
+
+  } catch (error) {
+    alert(error.response?.data?.message || "Failed to resend OTP");
+  } finally {
+    setResending(false);
+  }
+};
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
 
@@ -170,9 +231,10 @@ export default function VerifyOtpPage({ email }) {
           Didn’t receive OTP?{" "}
           <button
             onClick={resendOTP}
+             disabled={resending}
             className="text-yellow-400 font-semibold hover:underline"
           >
-            Resend
+             {resending ? "Resending..." : "Resend OTP"}
           </button>
         </p>
 
