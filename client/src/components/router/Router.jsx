@@ -15,7 +15,7 @@ import AdminProductsPage from "../../pages/admin/AdminProductsPage";
 import AdminOrdersPage from "../../pages/admin/AdminOrdersPage";
 import HotDealsPage from "../layout/HotDealsPage";
 import ContactPage from "../layout/ContactPage";
-import VerifyOtpPage from "../../pages/utility/verifyOtpPage";
+import VerifyOtpPage from "../../pages/utility/VerifyOtpPage";
 import UserDashboard from "../../pages/customer/UserDashboard";
 import CustomersPage from "../../pages/admin/CustomersPage";
 import AdminHotDealPage from "../../pages/admin/AdminHotDealPage";
