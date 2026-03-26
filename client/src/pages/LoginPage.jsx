@@ -3,16 +3,32 @@ import React, { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { Settings, User, Mail, Lock } from "lucide-react";
 import { loginUser } from "../api/authApi";
+import Loader from "../utils/Loader";
 
 export default function LoginPage({ role }) {
-  const { login, setCurrentPage } = useApp();
+  const { login, setCurrentPage,loading} = useApp();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+ // const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
   e.preventDefault();
-  await login(email, password, role); // ✅ use context only
+  await login(email, password, role); // ✅ only call this
 };
+//   const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   try{
+//   setLoading(true);
+//   await login(email, password, role);
+//   setTimeout(() => {
+//   setLoading(false);
+// }, 80000);
+//   }
+//   catch (err) {
+//     console.log(err);
+//   } finally {
+//     //setLoading(false); // 🔥 stop loader
+//   }
+// };
 // const handleSubmit = async (e) => {
 //   e.preventDefault();
 
@@ -35,7 +51,7 @@ export default function LoginPage({ role }) {
 // };
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 bg-linear-to-br from-black via-gray-900 to-black">
-
+       {loading && <Loader />} {/* ✅ FULL SCREEN */}
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border border-yellow-500/20 p-10 rounded-3xl shadow-2xl shadow-yellow-500/10 animate-fade-in"

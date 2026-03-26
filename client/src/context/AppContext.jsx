@@ -9,6 +9,8 @@ import { getHotDealBanner } from "../api/hotDealApi";
 import { loginUser,getProfileApi,updateProfileApi,changePasswordApi,deleteAccountApi } from "../api/authApi";
 const AppContext = createContext();
 export const useApp = () => useContext(AppContext);
+import Loader from "../utils/Loader";
+
 
 
 export const AppProvider = ({ children }) => {
@@ -23,6 +25,7 @@ export const AppProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [toasts, setToasts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   
   const [hotDeals, setHotDeals] = useState([]);
@@ -58,30 +61,32 @@ useEffect(() => {
 
   const login = async (email, password, role) => {
   try {
-
-    setIsLoading(true);
+    setLoading(true);
     const { data } = await loginUser({ email, password }); 
-    // ✅ no role needed (backend decides)
-
-
+  
         // ✅ Optional UI-level role restriction
     if (role === "admin" && data.role !== "admin") {
       showToast("You are not an admin");
+      setLoading(false);
       return;
     }
     // ✅ Store full user object (token included)
     localStorage.setItem("userInfo", JSON.stringify(data));
 
     // ✅ Set user globally
-    setUser(data);
-    // ✅ Redirect based on role
-    setCurrentPage(data.role === "admin" ? "admin-dashboard" : "home");
-    showToast("Login successful");
+     setUser(data);
+      setTimeout(() => {
+       setCurrentPage(data.role === "admin" ? "admin-dashboard" : "home");
+       showToast("Login successful");
+       setLoading(false);
+     }, 3100);
+
+   
+   
 
   } catch (error) {
     showToast(error.response?.data?.message || "Login failed");
-  } finally {
-    setIsLoading(false);
+     setLoading(false);
   }
 };
 
@@ -574,7 +579,7 @@ const fetchMyOrders = async () => {
       orders, placeOrder,fetchAllOrders,fetchMyOrders, updateOrderStatus,
       currentPage, setCurrentPage,
       selectedProductId, setSelectedProductId,selectedProduct,getProductById,
-      showToast, isLoading, setIsLoading,
+      showToast, isLoading, setIsLoading,loading,
       searchQuery, setSearchQuery,
       toasts,
       hotDeals,latestHotDeal,showHotDealAd,setShowHotDealAd,getHotDealsProducts,openHotDealAd,
