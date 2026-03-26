@@ -27,6 +27,11 @@ export const register = async (req,res)=>{
       otpExpire: Date.now() + 10 * 60 * 1000
     });
     console.log("User Saved:", user.email);
+
+       res.status(201).json({
+        email:user.email,
+        message: "User registered. OTP sent to email",
+      });
 const message = `
 <div style="font-family: Arial, sans-serif; background-color: #0f172a; padding: 20px; color: #ffffff;">
   
@@ -75,13 +80,7 @@ const message = `
 </div>
 `;
 
-await sendEmail(email, "Verify your email", message);
-
-      res.status(201).json({
-        email:user.email,
-        message: "OTP sent to email",
-      });
-    
+ sendEmail(email, "Verify your email", message);
 
   }catch(error){
     res.status(500).json({message:error.message});

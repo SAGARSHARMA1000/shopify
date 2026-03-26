@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { User, Mail, Lock, Phone, Settings } from "lucide-react";
 import { registerUser } from "../api/authApi";
+import Loader from "../utils/Loader";
 
 export default function SignupPage({ role }) {
   const { register, setCurrentPage } = useApp();
@@ -12,6 +13,7 @@ export default function SignupPage({ role }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agree, setAgree] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
@@ -63,6 +65,7 @@ const handleSubmit = async (e) => {
   }
 
   try {
+    setLoading(true);
     const res = await registerUser({
       name,
       email,
@@ -73,16 +76,23 @@ const handleSubmit = async (e) => {
    // console.log("Email from localStorage:", email);
    // localStorage.setItem("userInfo", JSON.stringify(res.data));
     localStorage.setItem("verifyEmail", email);
-    alert("OTP sent to your email"); 
-    setCurrentPage("otp");
+   // alert("OTP sent to your email"); 
+   // setCurrentPage("otp");
+    // ✅ small delay so loader is visible
+    setTimeout(() => {
+      setLoading(false);
+      setCurrentPage("otp");
+    }, 8000);
+
   } catch (error) {
     console.log(error.response?.data || error.message);
+    setLoading(false);
   }
 };
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-10 bg-linear-to-br from-black via-gray-900 to-black">
-
+       {loading && <Loader />} {/* ✅ FULL SCREEN */}
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border border-yellow-500/20 p-8 md:p-10 rounded-3xl shadow-2xl shadow-yellow-500/10 animate-fade-in"
@@ -187,7 +197,7 @@ const handleSubmit = async (e) => {
         </div>
 
         {/* Button */}
-        <button
+        <button  
           className="w-full bg-linear-to-r from-yellow-500 to-yellow-400 text-black py-4 rounded-2xl font-bold text-lg hover:scale-[1.02] transition shadow-lg shadow-yellow-500/30"
         >
           Create Account
