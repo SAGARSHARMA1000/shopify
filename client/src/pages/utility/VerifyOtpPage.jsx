@@ -46,7 +46,8 @@
 
 // }
 import { useState, useRef } from "react";
-import axios from "axios";
+//import API from "axios";
+import API from "../../api/axios";
 import { useApp } from "../../context/AppContext";
 
 export default function VerifyOtpPage({ email }) {
@@ -169,7 +170,7 @@ const resendOTP = async () => {
     setResending(true);
 
     const { data } = await API.post("/auth/resend-otp", {
-      email
+      email: email.toLowerCase().trim(),
     });
 
     alert(data.message || "OTP resent successfully");

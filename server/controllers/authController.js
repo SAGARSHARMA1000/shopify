@@ -12,7 +12,7 @@ export const register = async (req,res)=>{
 
     const {name,password} = req.body;
       // ✅ normalize email
-    const email = req.body.email.toLowerCase().trim();
+    let email = req.body.email.toLowerCase().trim();
     const userExists = await User.findOne({email});
 
     if(userExists){
@@ -28,10 +28,7 @@ export const register = async (req,res)=>{
     });
     console.log("User Saved:", user.email);
 
-       res.status(201).json({
-        email:user.email,
-        message: "User registered. OTP sent to email",
-      });
+     
 const message = `
 <div style="font-family: Arial, sans-serif; background-color: #0f172a; padding: 20px; color: #ffffff;">
   
@@ -80,8 +77,11 @@ const message = `
 </div>
 `;
 
- sendEmail(email, "Verify your email", message);
-
+ await sendEmail(email, "Verify your email", message);
+   res.status(201).json({
+        email:user.email,
+        message: "User registered. OTP sent to email",
+      });
   }catch(error){
     res.status(500).json({message:error.message});
   }
@@ -90,16 +90,19 @@ export const verifyEmailOTP = async (req, res) => {
 
 try {
 
-const {  otp } = req.body;
+let {  otp } = req.body;
    const email = req.body.email;
+    otp=otp.toString().trim();
  console.log("incomingemail:", email); 
 const user = await User.findOne({ email });
 console.log("User Found:", user); 
+console.log("DB OTP:", user?.emailOTP);
+console.log("Entered OTP:", otp);
 if (!user) {
   return res.status(400).json({ message: "User not found" });
 }
 
-if (user.emailOTP !== otp) {
+if (!user.emailOTP ||user.emailOTP.toString() !== otp) {
   return res.status(400).json({ message: "Invalid OTP" });
 }
 
@@ -127,12 +130,15 @@ export const resendOTP = async (req, res) => {
   try {
 
     let { email } = req.body;
-    //email = email.toLowerCase().trim();
+    email = email.toLowerCase().trim();
 
     const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
+    }
+        if (user.otpExpire && user.otpExpire > Date.now() - 30000) {
+      return res.status(400).json({ message: "Please wait before requesting again" });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -142,7 +148,7 @@ export const resendOTP = async (req, res) => {
 
     await user.save();
 
-    await sendEmail(email, "Resend OTP", `<h1>${otp}</h1>`);
+     sendEmail(email, "Resend OTP", `<h1>${otp}</h1>`);
 
     res.json({ message: "OTP resent successfully" });
 
