@@ -26,7 +26,7 @@ export const register = async (req,res)=>{
       emailOTP: otp,
       otpExpire: Date.now() + 10 * 60 * 1000
     });
-    console.log("User Saved:", user.email);
+   // console.log("User Saved:", user.email);
 
      
 const message = `
@@ -93,11 +93,11 @@ try {
 let {  otp } = req.body;
    const email = req.body.email;
     otp=otp.toString().trim();
- console.log("incomingemail:", email); 
+// console.log("incomingemail:", email); 
 const user = await User.findOne({ email });
-console.log("User Found:", user); 
-console.log("DB OTP:", user?.emailOTP);
-console.log("Entered OTP:", otp);
+//console.log("User Found:", user); 
+//console.log("DB OTP:", user?.emailOTP);
+//console.log("Entered OTP:", otp);
 if (!user) {
   return res.status(400).json({ message: "User not found" });
 }
@@ -137,8 +137,13 @@ export const resendOTP = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-        if (user.otpExpire && user.otpExpire > Date.now() - 30000) {
-      return res.status(400).json({ message: "Please wait before requesting again" });
+    if (
+      user.lastOtpSentAt &&
+      Date.now() - user.lastOtpSentAt.getTime() < 30000
+    ) {
+      return res.status(400).json({
+        message: "Please wait 30 seconds before requesting again"
+      });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -279,3 +284,79 @@ export const login = async (req, res) => {
 };
 
 
+export const forgotPassword = async (req, res) => {
+  try {
+    let { email } = req.body;
+
+    email = email.toLowerCase().trim();
+
+    const user = await User.findOne({ email });
+
+    // 🔒 do not reveal user existence
+    if (!user) {
+      return res.json({ message: "If account exists, OTP sent" });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    user.resetOTP = otp;
+    user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
+
+    await user.save();
+
+    const message = `
+      <h2>Reset Your Password</h2>
+      <h1>${otp}</h1>
+      <p>This OTP is valid for 10 minutes</p>
+    `;
+
+    await sendEmail(email, "Password Reset OTP", message);
+
+    res.json({ message: "OTP sent to email" });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const resetPassword = async (req, res) => {
+  try {
+
+    let { email, otp, newPassword } = req.body;
+
+    email = email.toLowerCase().trim();
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid request" });
+    }
+
+    // ✅ check OTP exists
+    if (!user.resetOTP) {
+      return res.status(400).json({ message: "No OTP found" });
+    }
+
+    // ✅ check expiry
+    if (!user.resetOTPExpire || user.resetOTPExpire < Date.now()) {
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    // ✅ verify OTP
+    if (String(user.resetOTP) !== String(otp)) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    // ✅ update password
+    user.password = newPassword;
+
+    user.resetOTP = undefined;
+    user.resetOTPExpire = undefined;
+
+    await user.save(); // password will auto hash
+
+    res.json({ message: "Password reset successful" });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

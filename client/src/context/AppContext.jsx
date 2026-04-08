@@ -93,6 +93,7 @@ useEffect(() => {
   const logout = () => {
     localStorage.removeItem("userInfo");
     setUser(null);
+    setCart([])
     setCurrentPage("home");
     showToast("Logged out successfully");
   };

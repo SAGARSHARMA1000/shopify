@@ -332,6 +332,7 @@
 import React, { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { CreditCard, Truck } from "lucide-react";
+import paymentQr from "../assets/paymentQr.jpeg"
 
 export default function CheckoutPage() {
   const { cartTotal, placeOrder,cart } = useApp();
@@ -485,7 +486,7 @@ export default function CheckoutPage() {
 
               {/* 🔁 Replace with your QR image */}
               <img
-                src="src\assets\rma-logo.jpeg"
+                src={paymentQr}
                 alt="UPI QR"
                 className="w-40 mx-auto rounded-lg"
               />

@@ -399,7 +399,7 @@ export default function AdminProductsPage() {
   }
 
   await saveProduct(form,editingProduct?._id);
-  showToast(editingProduct ? "Product updated ✅" : "Product added ✅");
+  showToast(editingProduct ? "Product updated ✅" : "Product added successfully✅");
   setIsModalOpen(false);
   setEditingProduct(null);
 
@@ -746,7 +746,7 @@ const handleDelete = async (id) => {
               />
 
               <button className="w-full bg-linear-to-r from-yellow-500 to-yellow-400 text-black py-4 rounded-xl font-bold hover:scale-[1.02] transition">
-                Save Product
+                Add Product
               </button>
 
             </form>

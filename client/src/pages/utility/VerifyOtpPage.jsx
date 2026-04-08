@@ -45,7 +45,7 @@
 // );
 
 // }
-import { useState, useRef } from "react";
+import { useState, useRef,useEffect } from "react";
 //import API from "axios";
 import API from "../../api/axios";
 import { useApp } from "../../context/AppContext";
@@ -56,8 +56,21 @@ export default function VerifyOtpPage({ email }) {
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
+    const [timer, setTimer] = useState(40);
+const [resending, setResending] = useState(false);
+
 
   const inputsRef = useRef([]);
+
+  useEffect(() => {
+  if (timer === 0) return;
+
+  const interval = setInterval(() => {
+    setTimer((prev) => prev - 1);
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [timer]);
 
   // Handle input change
   const handleChange = (value, index) => {
@@ -156,7 +169,6 @@ export default function VerifyOtpPage({ email }) {
   //     alert("Failed to resend OTP");
   //   }
   // };
-const [resending, setResending] = useState(false);
 
 const resendOTP = async () => {
   const email = localStorage.getItem("verifyEmail");
@@ -174,6 +186,7 @@ const resendOTP = async () => {
     });
 
     alert(data.message || "OTP resent successfully");
+    setTimer(40);
 
   } catch (error) {
     alert(error.response?.data?.message || "Failed to resend OTP");
@@ -228,7 +241,7 @@ const resendOTP = async () => {
         </button>
 
         {/* Resend */}
-        <p className="text-center text-gray-400 text-sm mt-4">
+        {/* <p className="text-center text-gray-400 text-sm mt-4">
           Didn’t receive OTP?{" "}
           <button
             onClick={resendOTP}
@@ -238,7 +251,24 @@ const resendOTP = async () => {
              {resending ? "Resending..." : "Resend OTP"}
           </button>
         </p>
+         */}
+           <p className="text-center text-gray-400 text-sm mt-4">
+  Didn’t receive OTP?{" "}
 
+  {timer > 0 ? (
+    <span className="text-gray-500">
+      Resend in {timer}s
+    </span>
+  ) : (
+    <button
+      onClick={resendOTP}
+      disabled={resending}
+      className="text-yellow-400 font-semibold hover:underline disabled:opacity-50"
+    >
+      {resending ? "Resending..." : "Resend OTP"}
+    </button>
+  )}
+</p>
       </div>
 
     </div>

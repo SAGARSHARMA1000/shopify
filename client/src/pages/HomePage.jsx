@@ -144,6 +144,8 @@ import { useApp } from "../context/AppContext";
 import { getEffectivePrice } from "../utils/helpers";
 import { Filter, Eye, Tag, Plus, Search, Sparkles } from "lucide-react";
 import logo from "../assets/rma-logo.jpeg";
+import rma from "../assets/rma.png"
+
 import { fetchProducts } from "../api/productApi";
 
 
@@ -222,7 +224,7 @@ export default function HomePage() {
           {/* Right Logo */}
           <div className="relative">
             <img
-              src={logo}
+              src={rma}
               alt="RMA Logo"
               className="w-72 md:w-96 drop-shadow-[0_0_25px_rgba(255,215,0,0.4)] hover:scale-105 transition-all duration-500"
             />
@@ -260,12 +262,12 @@ export default function HomePage() {
           );
 
           return (
-            <div
+            /* <div
               key={product.id}
               className="bg-linear-to-br from-gray-900 to-black rounded-2xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition-all group shadow-lg hover:shadow-yellow-500/20 flex flex-col"
             >
-              {/* Image */}
-              <div className="relative h-64 overflow-hidden">
+              {/* Image */
+              /*<div className="relative h-64 overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.title}
@@ -290,10 +292,10 @@ export default function HomePage() {
                     -{product.discount}%
                   </span>
                 )}
-              </div>
+              </div>*/
 
-              {/* Info */}
-              <div className="p-6 flex flex-col grow">
+              /* Info */
+              /*<div className="p-6 flex flex-col grow">
                 <h3 className="text-lg font-bold mb-2 group-hover:text-yellow-400 transition-colors">
                   {product.title}
                 </h3>
@@ -322,7 +324,98 @@ export default function HomePage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */
+
+            <div
+  key={product.id}
+  className="bg-linear-to-br from-gray-900 to-black rounded-2xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition-all group shadow-lg hover:shadow-yellow-500/20 flex flex-col"
+>
+  {/* Image */}
+  <div className="relative h-64 overflow-hidden">
+    <img
+      src={product.image}
+      alt={product.title}
+      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+    />
+
+    <button
+      onClick={() => {
+        setSelectedProductId(product._id);
+        console.log("Clicked ID:", product._id);
+        setCurrentPage("product-details");
+      }}
+      className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center"
+    >
+      <div className="bg-yellow-500 text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2">
+        <Eye className="w-4 h-4" /> View Details
+      </div>
+    </button>
+
+    {product.discount > 0 && (
+      <span className="absolute top-4 right-4 bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+        -{product.discount}%
+      </span>
+    )}
+  </div>
+
+  {/* Info */}
+  <div className="p-6 flex flex-col grow">
+    <h3 className="text-lg font-bold mb-2 group-hover:text-yellow-400 transition-colors">
+      {product.title}
+    </h3>
+
+    <p className="text-gray-400 text-sm mb-4 grow">
+      {product.description}
+    </p>
+
+    {/* Price */}
+    <div className="flex items-center justify-between mt-auto mb-4">
+      <div>
+        {product.discount > 0 && (
+          <span className="text-gray-500 line-through text-sm block">
+            ₹{product.price}
+          </span>
+        )}
+        <span className="text-2xl font-black text-yellow-400">
+          ₹{effectivePrice}
+        </span>
+      </div>
+
+      {/* Old Icon Button (kept) */}
+      {/* <button
+        onClick={() => addToCart(product)}
+        className="bg-yellow-500 text-black p-3 rounded-xl hover:scale-110 transition-all shadow-lg shadow-yellow-500/40"
+      >
+        <Plus />
+      </button> */}
+    </div>
+
+    {/* ✅ Flipkart Style Buttons */}
+    <div className="flex flex-col sm:flex-row gap-3">
+      
+      {/* Add to Cart */}
+      <button
+        onClick={() => addToCart(product)}
+        className="flex-1 bg-yellow-500 text-black py-3 rounded-xl font-bold hover:scale-105 transition-all shadow-lg shadow-yellow-500/30"
+      >
+        Add to Cart
+      </button>
+
+      {/* Buy Now */}
+      <button
+        onClick={() => {
+          addToCart(product); // optional: ensure item in cart
+          setSelectedProductId(product._id);
+          setCurrentPage("checkout"); // or "buy-now" page
+        }}
+        className="flex-1 bg-white text-black py-3 rounded-xl font-bold hover:scale-105 transition-all shadow-lg"
+      >
+        Buy Now
+      </button>
+      
+    </div>
+  </div>
+</div>
           );
         })}
       </div>

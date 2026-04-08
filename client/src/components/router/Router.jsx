@@ -15,10 +15,13 @@ import AdminProductsPage from "../../pages/admin/AdminProductsPage";
 import AdminOrdersPage from "../../pages/admin/AdminOrdersPage";
 import HotDealsPage from "../layout/HotDealsPage";
 import ContactPage from "../layout/ContactPage";
-import VerifyOtpPage from "../../pages/utility/VerifyOtpPage";
+
 import UserDashboard from "../../pages/customer/UserDashboard";
 import CustomersPage from "../../pages/admin/CustomersPage";
 import AdminHotDealPage from "../../pages/admin/AdminHotDealPage";
+import ForgotPassword from "../../pages/utility/ForgotPassword";
+import ResetPassword from "../../pages/utility/ResetPassword";
+import VerifyOtpPage from "../../pages/utility/verifyOtpPage";
 
 export default function Router() {
   const { currentPage } = useApp();
@@ -46,6 +49,10 @@ export default function Router() {
       return <UserDashboard role="user" />;
        case "otp":
       return <VerifyOtpPage role="user" />;
+       case "forgot":
+      return <ForgotPassword/>;
+       case "reset-password":
+      return <ResetPassword />;
     case "contact":
       return <ContactPage role="user" />;
     case "admin-login":

@@ -209,7 +209,7 @@ const handleSubmit = async (e) => {
           <button
             type="button"
             onClick={() =>
-              setCurrentPage(role === "admin" ? "admin-login" : "login")
+              setCurrentPage("login")
             }
             className="text-yellow-400 font-semibold hover:underline"
           >
@@ -218,7 +218,7 @@ const handleSubmit = async (e) => {
         </div>
 
         {/* Switch Role */}
-        <div className="text-center mt-4">
+        {/* <div className="text-center mt-4">
           <button
             type="button"
             onClick={() =>
@@ -228,7 +228,7 @@ const handleSubmit = async (e) => {
           >
             Switch to {role === "admin" ? "Customer" : "Admin"}
           </button>
-        </div>
+        </div> */}
 
       </form>
     </div>

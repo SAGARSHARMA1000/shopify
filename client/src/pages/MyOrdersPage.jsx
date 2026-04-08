@@ -1,31 +1,4 @@
-// import React from "react";
-// import { useApp } from "../context/AppContext";
-// import { Package } from "lucide-react";
 
-// export default function MyOrdersPage() {
-//   const { orders, user } = useApp();
-//   const myOrders = orders.filter(o => o.userId === user?.id);
-
-//   return (
-//     <div className="max-w-5xl mx-auto animate-fade-in">
-//       <h2 className="text-3xl font-black mb-8">My Orders</h2>
-
-//       {myOrders.length === 0 ? (
-//         <div className="bg-white p-20 rounded-3xl text-center border-2 border-dashed">
-//           <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-//           <p>No orders found.</p>
-//         </div>
-//       ) : (
-//         myOrders.map(order => (
-//           <div key={order.id} className="bg-white rounded-3xl p-6 mb-6 shadow-sm">
-//             <p className="font-bold">{order.id}</p>
-//             <p>${order.total.toFixed(2)}</p>
-//           </div>
-//         ))
-//       )}
-//     </div>
-//   );
-// }
 import React ,{useEffect}from "react";
 import { useApp } from "../context/AppContext";
 import { Package, CheckCircle, Truck, CreditCard } from "lucide-react";

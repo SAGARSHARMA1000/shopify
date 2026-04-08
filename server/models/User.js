@@ -33,8 +33,10 @@ address: String,
 city: String,
 
   emailOTP: String,
-
-  otpExpire: Date
+ otpExpire: Date,
+  resetOTP: String,
+resetOTPExpire: Date,
+lastOtpSentAt: Date,
 },
 {
   timestamps: true

@@ -149,7 +149,7 @@ const sendEmail = async (toEmail, subject, htmlContent) => {
       throw new Error(`Brevo API failed: ${response.status} - ${errorData.message || "Unknown error"}`);
     }
 
-    console.log(`✅ Email sent successfully to: ${toEmail}`);
+   // console.log(`✅ Email sent successfully to: ${toEmail}`);
     return true;
   } catch (error) {
     console.error("❌ Failed to send email:", error.message);

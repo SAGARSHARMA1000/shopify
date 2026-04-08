@@ -308,55 +308,31 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Auth */}
-          {/* {user ? (
-            <div className="flex items-center gap-4 pl-4 border-l border-gray-700">
-              <button
-                onClick={() => setCurrentPage("my-orders")}
-                className="hover:text-yellow-400 transition"
-              >
-                <User className="w-6 h-6" />
-              </button>
-              <button
-                onClick={logout}
-                className="text-red-500 hover:text-red-400"
-              >
-                <LogOut className="w-5 h-5" />
-              </button>
-            </div>
-          ) : (
-            {/* <button
-              onClick={() => setCurrentPage("login")}
-              className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-5 py-2 rounded-full font-bold hover:scale-105 transition shadow-lg"
-            >
-              Login
-            </button> */}
-            
-            
-          {/* )} */} 
           {user ? (
-  <div className="flex items-center gap-4 pl-4 border-l border-gray-700">
+  <div className="flex items-center gap-3 sm:gap-4 pl-2 sm:pl-4 border-l border-gray-700">
     <button
       onClick={() => setCurrentPage("userDashboard")}
       className="hover:text-yellow-400 transition"
     >
-      <User className="w-6 h-6" />
+      <User className="w-5 h-5 sm:w-6 sm:h-6" />
     </button>
 
     <button
       onClick={logout}
       className="text-red-500 hover:text-red-400"
     >
-      <LogOut className="w-5 h-5" />
+      <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
     </button>
   </div>
 ) : (
-  <div className="flex items-center gap-3">
+  <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
 
     {/* Login */}
     <button
       onClick={() => setCurrentPage("login")}
-      className="px-4 py-2 border border-yellow-500 text-yellow-400 rounded-full font-semibold hover:bg-yellow-500 hover:text-black transition"
+     className="px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-yellow-500 text-yellow-400 rounded-full font-semibold hover:bg-yellow-500 hover:text-black transition whitespace-nowrap"
+    
+     // className="px-4 py-2 border border-yellow-500 text-yellow-400 rounded-full font-semibold hover:bg-yellow-500 hover:text-black transition"
     >
       Login
     </button>
@@ -364,7 +340,9 @@ export default function Navbar() {
     {/* Signup */}
     <button
       onClick={() => setCurrentPage("signup")}
-      className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-5 py-2 rounded-full font-bold hover:scale-105 transition shadow-lg"
+     className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-4 sm:px-5 py-1.5 sm:py-2 text-sm sm:text-base rounded-full font-bold hover:scale-105 transition shadow-lg whitespace-nowrap"
+    
+     // className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-5 py-2 rounded-full font-bold hover:scale-105 transition shadow-lg"
     >
       Sign Up
     </button>
