@@ -21,7 +21,7 @@ import CustomersPage from "../../pages/admin/CustomersPage";
 import AdminHotDealPage from "../../pages/admin/AdminHotDealPage";
 import ForgotPassword from "../../pages/utility/ForgotPassword";
 import ResetPassword from "../../pages/utility/ResetPassword";
-import VerifyOtpPage from "../../pages/utility/verifyOtpPage";
+import VerifyOtpPage from "../../pages/utility/VerifyOtpPage";
 
 export default function Router() {
   const { currentPage } = useApp();
