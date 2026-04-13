@@ -564,7 +564,7 @@ import React, { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { CreditCard, Truck } from "lucide-react";
 import paymentQr from "../assets/paymentQr.jpeg";
-import { downloadQR } from "../utils/downloadQR";
+import { downloadQr } from "../utils/downloadQr";
 import { getEffectivePrice } from "../utils/helpers";
 export default function CheckoutPage() {
   const {currentPage, cartTotal, placeOrder, cart,checkoutItems,selectedProduct} = useApp();
@@ -634,7 +634,7 @@ const selectedTotal = items.reduce((acc, item) => {
         {/* ================= LEFT: FORM ================= */}
         <form
           onSubmit={handleSubmit}
-          className="lg:col-span-2 bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-6 md:p-8 rounded-3xl shadow-xl space-y-6"
+          className="lg:col-span-2 bg-linear-to-br from-gray-900 to-black border border-gray-800 p-6 md:p-8 rounded-3xl shadow-xl space-y-6"
         >
           <h2 className="text-3xl font-black text-yellow-400">
             Checkout
@@ -767,7 +767,7 @@ const selectedTotal = items.reduce((acc, item) => {
 
               <button
                 type="button"
-                onClick={() => downloadQR(paymentQr)}
+                onClick={() => downloadQr(paymentQr)}
                 className="text-sm text-blue-400 underline"
               >
                 Download QR

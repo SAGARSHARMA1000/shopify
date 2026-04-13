@@ -1,4 +1,4 @@
-export const downloadQR = (qrSrc) => {
+export const downloadQr = (qrSrc) => {
   const link = document.createElement("a");
   link.href = qrSrc;
   link.download = "payment-qr.jpeg";
