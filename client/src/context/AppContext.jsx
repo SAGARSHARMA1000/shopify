@@ -180,7 +180,7 @@ const deleteAccount = async () => {
  
   const getProductById = async (id) => {
      try {
-  //  console.log("Fetching product ID:", id);
+    //console.log("Fetching product ID:", id);
 
     const { data } = await fetchProductById(id);
 

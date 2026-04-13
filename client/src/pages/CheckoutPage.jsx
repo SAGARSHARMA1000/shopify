@@ -793,7 +793,7 @@ const selectedTotal = items.reduce((acc, item) => {
           )}
 
           {/* BUTTON */}
-          <button className="w-full bg-gradient-to-r from-yellow-500 to-yellow-400 text-black py-4 rounded-2xl font-bold text-lg hover:scale-[1.02] transition">
+          <button className="w-full bg-linear-to-r from-yellow-500 to-yellow-400 text-black py-4 rounded-2xl font-bold text-lg hover:scale-[1.02] transition">
             {paymentMethod === "COD"
               ? "Place Order"
               : `Confirm Payment ₹${cartTotal.toFixed(2)}`}
@@ -801,7 +801,7 @@ const selectedTotal = items.reduce((acc, item) => {
         </form>
 
         {/* ================= RIGHT: SUMMARY ================= */}
-        <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-6 rounded-3xl shadow-xl space-y-6 sticky top-24 h-fit">
+        <div className="bg-linear-to-br from-gray-900 to-black border border-gray-800 p-6 rounded-3xl shadow-xl space-y-6 sticky top-24 h-fit">
 
           <h3 className="text-xl font-bold text-yellow-400">
             Order Summary
