@@ -162,7 +162,7 @@ const deleteAccount = async () => {
       setIsLoading(true);
 
       const { data } = await fetchProducts();
-
+     // console.log("API data", data);
       setProducts(data);
 
     } catch (error) {

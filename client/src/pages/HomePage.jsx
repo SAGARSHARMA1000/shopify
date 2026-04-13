@@ -139,7 +139,7 @@
 //     </div>
 //   );
 // }
-import React, { useEffect,useState } from "react";
+import React, { useEffect,useState,map } from "react";
 import { useApp } from "../context/AppContext";
 import { getEffectivePrice } from "../utils/helpers";
 import { Filter, Eye, Tag, Plus, Search, Sparkles } from "lucide-react";
@@ -161,17 +161,11 @@ export default function HomePage() {
 
   const [activeCategory, setActiveCategory] = useState("All");
 
-  const categories = ["All", ...new Set(products.map(p => p.category))];
-   //const [products, setProducts] = useState([]);
   
-// useEffect(() => {
-//   const loadProducts = async () => {
-//     const { data } = await fetchProducts();
-//     setProducts(data);
-//   };
-
-//   loadProducts();
-// }, []);
+const categories = [
+  "All",
+  ...new Set((products || []).map(p => p.category))
+];
 
   const filteredProducts = products.filter(p => {
     const matchesCategory =
