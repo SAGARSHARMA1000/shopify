@@ -168,7 +168,7 @@ export default function Footer() {
             <li onClick={() => setCurrentPage("home")} className="hover:text-yellow-400 cursor-pointer transition">
               All Products
             </li>
-            <li onClick={() => setCurrentPage("home")} className="hover:text-yellow-400 cursor-pointer transition">
+            <li onClick={() => setCurrentPage("hotdeals")} className="hover:text-yellow-400 cursor-pointer transition">
               Hot Deals
             </li>
             <li onClick={() => setCurrentPage("cart")} className="hover:text-yellow-400 cursor-pointer transition">
@@ -190,7 +190,7 @@ export default function Footer() {
             <li onClick={() => setCurrentPage("signup")} className="hover:text-yellow-400 cursor-pointer transition">
               Sign Up
             </li>
-            <li onClick={() => setCurrentPage("userDashboard")} className="hover:text-yellow-400 cursor-pointer transition">
+            <li onClick={() => setCurrentPage("signup")} className="hover:text-yellow-400 cursor-pointer transition">
               My Dashboard
             </li>
             <li onClick={() => setCurrentPage("cart")} className="hover:text-yellow-400 cursor-pointer transition">

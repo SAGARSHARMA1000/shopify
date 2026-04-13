@@ -155,8 +155,8 @@ export default function HomePage() {
     products,
     addToCart,
     setCurrentPage,
-    setSelectedProductId,
-    searchQuery
+    startCheckout,
+    searchQuery,user,showToast
   } = useApp();
 
   const [activeCategory, setActiveCategory] = useState("All");
@@ -333,7 +333,7 @@ export default function HomePage() {
   {/* Image */}
   <div className="relative h-64 overflow-hidden">
     <img
-      src={product.image}
+      src={product.image[0]}
       alt={product.title}
       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
     />
@@ -341,7 +341,7 @@ export default function HomePage() {
     <button
       onClick={() => {
         setSelectedProductId(product._id);
-        console.log("Clicked ID:", product._id);
+       // console.log("Clicked ID:", product._id);
         setCurrentPage("product-details");
       }}
       className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center"
@@ -404,10 +404,18 @@ export default function HomePage() {
       {/* Buy Now */}
       <button
         onClick={() => {
-          addToCart(product); // optional: ensure item in cart
-          setSelectedProductId(product._id);
-          setCurrentPage("checkout"); // or "buy-now" page
-        }}
+          if (!user) {
+       showToast("Please login to continue", "error");
+        setCurrentPage("login");
+      return;
+       }
+        startCheckout([
+      {
+        ...product,
+        quantity: 1,
+      },
+    ]);
+  }}
         className="flex-1 bg-white text-black py-3 rounded-xl font-bold hover:scale-105 transition-all shadow-lg"
       >
         Buy Now

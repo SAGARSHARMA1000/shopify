@@ -32,7 +32,7 @@ export default function HotDealAdModal() {
 
         {/* Image */}
         <img
-          src={latestHotDeal.image}
+          src={latestHotDeal.image[0]}
           alt={latestHotDeal.title}
           className="w-full h-72 object-cover"
         />

@@ -216,7 +216,7 @@ useEffect(() => {
           )}
 
           {/* ORDERS */}
-          {activeTab === "orders" && (
+          {/* {activeTab === "orders" && (
             <div>
               <h3 className="text-xl font-bold mb-6 text-yellow-400">
                 My Orders
@@ -248,7 +248,129 @@ useEffect(() => {
                 </div>
               )}
             </div>
-          )}
+          )} */}
+           {activeTab === "orders" && (
+  <div>
+    <h3 className="text-xl font-bold mb-6 text-yellow-400">
+      My Orders
+    </h3>
+
+    {orders.length === 0 ? (
+      <p className="text-gray-400">No orders yet</p>
+    ) : (
+      <div className="space-y-6">
+
+        {orders.map((order) => (
+          <div
+            key={order._id}
+            className="p-4 sm:p-5 bg-black rounded-2xl border border-gray-800 hover:border-yellow-500/30 transition"
+          >
+
+            {/* HEADER */}
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-4">
+
+              <div>
+                <p className="text-xs text-gray-400">Order ID</p>
+                <p className="text-xs sm:text-sm text-gray-300 break-all">
+                  {order._id}
+                </p>
+
+                <p className="text-xs text-gray-500 mt-1">
+                  {new Date(order.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+
+              <div className="text-left sm:text-right">
+                <p className="text-lg font-bold text-white">
+                  ₹{order.totalAmount}
+                </p>
+
+                <p className="text-xs text-gray-400">
+                  {order.paymentMethod}
+                </p>
+
+                <p
+                  className={`text-xs font-bold ${
+                    order.paymentStatus === "Paid"
+                      ? "text-green-400"
+                      : "text-yellow-400"
+                  }`}
+                >
+                  {order.paymentStatus}
+                </p>
+              </div>
+
+              {/* STATUS */}
+              <div className="flex items-center gap-2 text-yellow-400 font-semibold">
+                {getStatusIcon(order.orderStatus)}
+                {order.orderStatus}
+              </div>
+            </div>
+
+            {/* PRODUCTS */}
+            <div className="space-y-3 mb-4">
+              {order.orderItems.map((item) => (
+                <div
+                  key={item._id}
+                  className="flex gap-3 bg-gray-900 border border-gray-800 p-3 rounded-xl"
+                >
+
+                  {/* Image */}
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-lg border border-gray-700"
+                  />
+
+                  {/* Info */}
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-white">
+                      {item.name}
+                    </p>
+
+                    <p className="text-xs text-gray-400">
+                      Qty: {item.quantity}
+                    </p>
+                  </div>
+
+                  {/* Price */}
+                  <div className="text-right">
+                    <p className="text-yellow-400 font-bold text-sm">
+                      ₹{item.price}
+                    </p>
+
+                    <p className="text-xs text-gray-400">
+                      ₹{item.price * item.quantity}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* SHIPPING */}
+            <div className="bg-gray-900 border border-gray-800 p-3 rounded-xl text-xs sm:text-sm">
+              <p className="text-gray-400 mb-1">Shipping</p>
+
+              <p className="text-white font-semibold">
+                {order.shippingAddress?.name}
+              </p>
+
+              <p className="text-gray-400">
+                {order.shippingAddress?.address}
+              </p>
+
+              <p className="text-gray-400">
+                {order.shippingAddress?.city} - {order.shippingAddress?.zip}
+              </p>
+            </div>
+
+          </div>
+        ))}
+
+      </div>
+    )}
+  </div>
+)}
 
           {/* DELETE */}
           {activeTab === "delete" && (

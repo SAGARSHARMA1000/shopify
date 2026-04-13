@@ -26,10 +26,21 @@ router.get("/:id", getSingleProduct);
 
 // POST /api/products  (Admin only)
 // router.post("/", protect, adminOnly, addProduct);
-router.post("/", protect, upload.single("image"), addProduct);
+router.post("/", protect, 
+upload.fields([
+    { name: "images", maxCount: 5 },  // multiple images
+    { name: "video", maxCount: 1 },   // single video
+  ]),
+   addProduct);
 
 // PUT /api/products/:id  (Admin only)
-router.put("/:id", protect, upload.single("image"), adminOnly, updateProduct);
+router.put("/:id", protect, 
+  upload.fields([
+    { name: "images", maxCount: 5 },  // multiple images
+    { name: "video", maxCount: 1 },   // single video
+  ])
+  , adminOnly, 
+  updateProduct);
 
 // DELETE /api/products/:id  (Admin only)
 router.delete("/:id", protect, adminOnly, deleteProduct);

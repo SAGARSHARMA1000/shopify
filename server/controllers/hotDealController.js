@@ -34,7 +34,7 @@ export const saveHotDealBanner = async (req, res) => {
       const result = await new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream(
           {
-            folder: "rma-products", // ✅ your folder
+            folder: "rma-products/banner", // ✅ your folder
           },
           (error, result) => {
             if (error) reject(error);

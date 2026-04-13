@@ -158,17 +158,6 @@ const [resending, setResending] = useState(false);
   }
 };
 
-  // const resendOTP = async () => {
-  //   try {
-  //     await axios.post(
-  //       "http://localhost:5000/api/auth/resend-otp",
-  //       { email }
-  //     );
-  //     alert("OTP resent");
-  //   } catch (err) {
-  //     alert("Failed to resend OTP");
-  //   }
-  // };
 
 const resendOTP = async () => {
   const email = localStorage.getItem("verifyEmail");

@@ -213,7 +213,7 @@ export default function Navbar() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-
+   const closeMenu = () => setIsMenuOpen(false);
   return (
     <nav className="bg-black text-gray-300 sticky top-0 z-40 border-b border-yellow-500/20 shadow-lg">
 
@@ -263,12 +263,12 @@ export default function Navbar() {
             Shop
           </button>
 
-          <button
+          {/* <button
             onClick={() => setCurrentPage("home")}
             className="hover:text-yellow-400 transition font-medium"
           >
             Categories
-          </button>
+          </button> */}
 
           <button
             onClick={openHotDealAd}
@@ -362,7 +362,7 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {isMenuOpen && (
+      {/* {isMenuOpen && (
         <div className="md:hidden bg-black border-t border-gray-800 p-4 space-y-4">
 
           <input
@@ -422,7 +422,290 @@ export default function Navbar() {
             
           )}
         </div>
+      )} */}
+          {/* Mobile Menu */}
+{/* {isMenuOpen && (
+  <div className="md:hidden bg-black border-t border-gray-800 px-4 py-5 space-y-5 animate-fade-in">
+
+    {/* 🔍 Search */}
+    {/* <div className="relative">
+      <input
+        type="text"
+        placeholder="Search gadgets..."
+        className="w-full bg-gray-900 text-white rounded-full py-3 pl-10 pr-4 border border-gray-700 focus:border-yellow-500 focus:outline-none"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <Search className="absolute left-3 top-3 w-5 h-5 text-yellow-500" />
+    </div> */}
+
+    {/* 🛒 Quick Actions */}
+    {/* <div className="flex items-center justify-between gap-4">
+
+      <button
+        onClick={() => setCurrentPage("cart")}
+        className="flex items-center gap-2 bg-gray-900 px-4 py-2 rounded-full border border-gray-700"
+      >
+        <ShoppingCart className="w-5 h-5 text-yellow-400" />
+        <span>Cart ({cartCount})</span>
+      </button>
+
+      {!user && (
+        <button
+          onClick={() => setCurrentPage("signup")}
+          className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-4 py-2 rounded-full font-bold shadow-md"
+        >
+          Sign Up
+        </button>
       )}
+    </div> */}
+
+    {/* 📦 Navigation */}
+    {/* <div className="space-y-3 text-base">
+
+      <button
+        onClick={() => setCurrentPage("home")}
+        className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-gray-900 transition"
+      >
+        🛍 Shop
+      </button>
+
+      <button
+        onClick={() => setCurrentPage("home")}
+        className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-gray-900 transition"
+      >
+        📂 Categories
+      </button>
+
+      <button
+        onClick={openHotDealAd}
+        className="flex items-center gap-3 w-full p-3 rounded-lg text-yellow-500 font-semibold hover:bg-gray-900 transition"
+      >
+        🔥 Hot Deals
+      </button>
+
+      <button
+        onClick={() => setCurrentPage("contact")}
+        className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-gray-900 transition"
+      >
+        📞 Contact
+      </button>
+    </div> */}
+
+    {/* 👤 Account Section */}
+    {/* <div className="border-t border-gray-800 pt-4 space-y-3">
+
+      {user ? (
+        <>
+          <button
+            onClick={() => setCurrentPage("userDashboard")}
+            className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-gray-900 transition"
+          >
+            👤 My Dashboard
+          </button>
+
+          {user?.role === "admin" && (
+            <button
+              onClick={() => setCurrentPage("admin-dashboard")}
+              className="flex items-center gap-3 w-full p-3 rounded-lg text-yellow-400 hover:bg-gray-900 transition"
+            >
+              ⚙️ Admin Panel
+            </button>
+          )}
+
+          <button
+            onClick={logout}
+            className="flex items-center gap-3 w-full p-3 rounded-lg text-red-500 hover:bg-gray-900 transition"
+          >
+            🚪 Logout
+          </button>
+        </>
+      ) : (
+        <div className="flex gap-3">
+
+          <button
+            onClick={() => setCurrentPage("login")}
+            className="flex-1 border border-yellow-500 text-yellow-400 py-3 rounded-full font-semibold hover:bg-yellow-500 hover:text-black transition"
+          >
+            Login
+          </button>
+
+          <button
+            onClick={() => setCurrentPage("signup")}
+            className="flex-1 bg-yellow-500 text-black py-3 rounded-full font-bold"
+          >
+            Sign Up
+          </button>
+
+        </div>
+      )}
+    </div>
+
+  </div> */}
+{/* )}  */} 
+
+           {/* Overlay */}
+<div
+  className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+    isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+  }`}
+  onClick={closeMenu}
+/>
+
+{/* Slide Drawer */}
+<div
+  className={`fixed top-0 left-0 h-full w-[80%] max-w-xs bg-black border-r border-gray-800 z-50 transform transition-transform duration-300 ease-in-out ${
+    isMenuOpen ? "translate-x-0" : "-translate-x-full"
+  }`}
+>
+
+  <div className="p-5 space-y-6">
+
+    {/* 🔥 Header */}
+    <div className="flex items-center justify-between">
+      <h2 className="text-yellow-400 font-bold text-lg">Menu</h2>
+      <button onClick={closeMenu}>
+        ✕
+      </button>
+    </div>
+
+    {/* 🔍 Search */}
+    <div className="relative">
+      <input
+        type="text"
+        placeholder="Search gadgets..."
+        className="w-full bg-gray-900 text-white rounded-full py-3 pl-10 pr-4 border border-gray-700 focus:border-yellow-500"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <Search className="absolute left-3 top-3 w-5 h-5 text-yellow-500" />
+    </div>
+
+    {/* 🛒 Cart */}
+    <button
+      onClick={() => {
+        setCurrentPage("cart");
+        closeMenu();
+      }}
+      className="flex items-center justify-between w-full bg-gray-900 px-4 py-3 rounded-xl border border-gray-700"
+    >
+      <span className="flex items-center gap-2">
+        <ShoppingCart className="w-5 h-5 text-yellow-400" />
+        Cart
+      </span>
+      <span className="text-yellow-400 font-bold">{cartCount}</span>
+    </button>
+
+    {/* 📦 Navigation */}
+    <div className="space-y-2">
+
+      <button
+        onClick={() => {
+          setCurrentPage("home");
+          closeMenu();
+        }}
+        className="w-full text-left p-3 rounded-lg hover:bg-gray-900"
+      >
+         Shop
+      </button>
+
+      {/* <button
+        onClick={() => {
+          setCurrentPage("home");
+          closeMenu();
+        }}
+        className="w-full text-left p-3 rounded-lg hover:bg-gray-900"
+      >
+         Categories
+      </button> */}
+
+      <button
+        onClick={() => {
+          openHotDealAd();
+          closeMenu();
+        }}
+        className="w-full text-left p-3 rounded-lg text-yellow-500 font-semibold hover:bg-gray-900"
+      >
+        🔥 Hot Deals
+      </button>
+
+      <button
+        onClick={() => {
+          setCurrentPage("contact");
+          closeMenu();
+        }}
+        className="w-full text-left p-3 rounded-lg hover:bg-gray-900"
+      >
+         Contact
+      </button>
+    </div>
+
+    {/* 👤 Account */}
+    <div className="border-t border-gray-800 pt-4 space-y-3">
+
+      {user ? (
+        <>
+          <button
+            onClick={() => {
+              setCurrentPage("userDashboard");
+              closeMenu();
+            }}
+            className="w-full text-left p-3 rounded-lg hover:bg-gray-900"
+          >
+             My Dashboard
+          </button>
+
+          {user?.role === "admin" && (
+            <button
+              onClick={() => {
+                setCurrentPage("admin-dashboard");
+                closeMenu();
+              }}
+              className="w-full text-left p-3 rounded-lg text-yellow-400 hover:bg-gray-900"
+            >
+              ⚙️ Admin Panel
+            </button>
+          )}
+
+          <button
+            onClick={() => {
+              logout();
+              closeMenu();
+            }}
+            className="w-full text-left p-3 rounded-lg text-red-500 hover:bg-gray-900"
+          >
+             Logout
+          </button>
+        </>
+      ) : (
+        <div className="flex gap-3">
+          <button
+            onClick={() => {
+              setCurrentPage("login");
+              closeMenu();
+            }}
+            className="flex-1 border border-yellow-500 text-yellow-400 py-3 rounded-full"
+          >
+            Login
+          </button>
+
+          <button
+            onClick={() => {
+              setCurrentPage("signup");
+              closeMenu();
+            }}
+            className="flex-1 bg-yellow-500 text-black py-3 rounded-full font-bold"
+          >
+            Sign Up
+          </button>
+        </div>
+      )}
+    </div>
+
+  </div>
+</div>
+
+
     </nav>
   );
 }

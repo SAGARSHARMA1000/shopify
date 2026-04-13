@@ -28,6 +28,7 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   
+  const [checkoutItems, setCheckoutItems] = useState([]);
   const [hotDeals, setHotDeals] = useState([]);
   const [latestHotDeal, setLatestHotDeal] = useState(null);
   const [showHotDealAd, setShowHotDealAd] = useState(false);
@@ -48,18 +49,17 @@ useEffect(() => {
 useEffect(() => {
   setSearchQuery("");
 }, [currentPage]);
-  // const login = (email, password, role) => {
-  //   setIsLoading(true);
-  //   setTimeout(() => {
-  //     const newUser = { email, role, id: role === "admin" ? "admin_1" : "user_1", name: role === "admin" ? "Admin User" : "Customer" };
-  //     setUser(newUser);
-  //     setCurrentPage(role === "admin" ? "admin-dashboard" : "home");
-  //     showToast(`Logged in as ${role}`);
-  //     setIsLoading(false);
-  //   }, 800);
-  // };
 
-  const login = async (email, password, role) => {
+
+useEffect(() => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}, [currentPage]);
+  
+
+const login = async (email, password, role) => {
   try {
     setLoading(true);
     const { data } = await loginUser({ email, password }); 
@@ -79,10 +79,7 @@ useEffect(() => {
        setCurrentPage(data.role === "admin" ? "admin-dashboard" : "home");
        showToast("Login successful");
        setLoading(false);
-     }, 3100);
-
-   
-   
+     }, 3100); 
 
   } catch (error) {
     showToast(error.response?.data?.message || "Login failed");
@@ -138,7 +135,7 @@ const updatePassword = async (passwordData) => {
   }
 };
 
-   const deleteAccount = async () => {
+const deleteAccount = async () => {
   try {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete your account?"
@@ -160,7 +157,7 @@ const updatePassword = async (passwordData) => {
 };
 
 
-   const loadProducts = async () => {
+  const loadProducts = async () => {
     try {
       setIsLoading(true);
 
@@ -179,80 +176,31 @@ const updatePassword = async (passwordData) => {
     openHotDealAd();
   }, []);
 
-const getProductById = async (id) => {
-  try {
-   // console.log("Fetching product:", id);
+
+ 
+  const getProductById = async (id) => {
+     try {
+  //  console.log("Fetching product ID:", id);
+
     const { data } = await fetchProductById(id);
-    // console.log("API RESPONSE:", data); 
-    // if (data.success) {
-      setSelectedProduct(data);
-   // }
+
+    // ✅ CORRECT DEBUG
+    //console.log("API RESPONSE:", data);
+    //console.log("IMAGES FIELD:", data.images);
+    //console.log("IMAGES TYPE:", typeof data.images);
+    //console.log("IS ARRAY:", Array.isArray(data.images));
+
+    setSelectedProduct(data);
+
   } catch (error) {
-    console.log(error);
+    console.log("ERROR FETCHING PRODUCT:", error);
   }
 };
+const startCheckout = (items) => {
+  setCheckoutItems(items);
+  setCurrentPage("checkout");
+};
 
-  
-  // const addToCart = (product) => {
-  //   setCart(prev => {
-  //     const existing = prev.find(item => item.id === product.id);
-  //     if (existing) {
-  //       return prev.map(item =>
-  //         item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-  //       );
-  //     }
-  //     return [...prev, { ...product, quantity: 1 }];
-  //   });
-  //   showToast(`${product.title} added to cart!`);
-  // };
-// const addToCart = (product) => {
-
-//   if (!user) {
-//     showToast("Please login to add items to cart", "error");
-//     setCurrentPage("login"); // redirect to login page
-//     return;
-//   }
-
-//   setCart(prev => {
-//     const existing = prev.find(item => item.id === product.id);
-
-//     if (existing) {
-//       return prev.map(item =>
-//         item.id === product.id
-//           ? { ...item, quantity: item.quantity + 1 }
-//           : item
-//       );
-//     }
-
-//     return [...prev, { ...product, quantity: 1 }];
-//   });
-
-//   showToast(`${product.title} added to cart!`);
-// };
-//   const updateCartQuantity = (id, delta) => {
-//     setCart(prev =>
-//       prev.map(item =>
-//         item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
-//       )
-//     );
-//   };
-
-//   const removeFromCart = (id) => {
-//     setCart(prev => prev.filter(item => item.id !== id));
-//     showToast("Item removed from cart");
-//   };
-
-//   const cartTotal = useMemo(() => {
-//     return cart.reduce((acc, item) => {
-//       const price = getEffectivePrice(item.price, item.discount);
-//       return acc + price * item.quantity;
-//     }, 0);
-//   }, [cart]);
-
-//   const deleteProduct = (id) => {
-//     setProducts(prev => prev.filter(p => p.id !== id));
-//     showToast("Product deleted");
-//   };
 const addToCart = (product) => {
   if (!user) {
     showToast("Please login to add items to cart", "error");
@@ -283,6 +231,28 @@ const addToCart = (product) => {
   showToast(`${product.title} added to cart!`);
 };
 
+const handleBuyNow = async (id) => {
+  try {
+    const { data } = await fetchProductById(id);
+
+    startCheckout([
+      {
+        ...data,
+        quantity: 1,
+      },
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const checkoutFromCart = (selectedItems) => {
+  const selectedProducts = cart.filter((item) =>
+    selectedItems.includes(item._id)
+  );
+
+  startCheckout(selectedProducts);
+};
+
 const updateCartQuantity = (id, delta) => {
   setCart((prev) =>
     prev
@@ -299,10 +269,12 @@ const updateCartQuantity = (id, delta) => {
       })
   );
 };
+
 const removeFromCart = (id) => {
   setCart((prev) => prev.filter((item) => item._id !== id));
   showToast("Item removed from cart");
 };
+
 const cartTotal = useMemo(() => {
   return cart.reduce((acc, item) => {
     const price = getEffectivePrice(item.price, item.discount);
@@ -312,7 +284,7 @@ const cartTotal = useMemo(() => {
 }, [cart]);
 
 
-  const getHotDealsProducts = async () => {
+const getHotDealsProducts = async () => {
   try {
 
     const { data } = await fetchHotDeals();
@@ -386,6 +358,8 @@ const saveProduct = async (product,id=null) => {
       console.log(err);
     }
   };
+
+
 const deleteProduct = async (id) => {
   try {
     setIsLoading(true);
@@ -407,110 +381,7 @@ const deleteProduct = async (id) => {
   }
 };
 
-// const placeOrder = async ({ shipping, paymentMethod }) => {
 
-//   const token = localStorage.getItem("token");
-
-//   const orderItems = cart.map((item) => ({
-//     name: item.title,
-//     image: item.image,
-//     price: item.price,
-//     quantity: item.quantity,
-//     product: item._id || item.id,
-//   }));
-
-//   const orderData = {
-//     orderItems,
-//     shippingAddress: shipping,
-//     totalAmount: cartTotal,
-//     paymentMethod,
-//   };
-
-//   try {
-
-//     // COD ORDER
-//     if (paymentMethod === "COD") {
-
-//       const { data } = await placeCODOrder(orderData, token);
-
-//       if (data.success) {
-//         showToast("Order placed successfully!");
-//         setCart([]);
-//         setCurrentPage("order-success");
-//       }
-
-//     }
-
-//     // ONLINE PAYMENT
-//     else if (paymentMethod === "ONLINE") {
-
-//       const res = await loadRazorpay();
-
-//       if (!res) {
-//         alert("Razorpay SDK failed to load");
-//         return;
-//       }
-
-//       const { data } = await createOnlineOrder(orderData, token);
-
-//       const options = {
-//         key: import.meta.env.VITE_RAZORPAY_KEY,
-//         amount: data.amount,
-//         currency: "INR",
-//         name: "RMA Store",
-//         description: "Order Payment",
-//         order_id: data.razorpayOrderId,
-
-//         // handler: function (response) {
-
-//         //   showToast("Payment successful!");
-//         //   setCart([]);
-//         //   setCurrentPage("order-success");
-
-//         // },
-//         handler: async function (response) {
-
-//   try {
-
-//     const verifyData = {
-//       razorpay_order_id: response.razorpay_order_id,
-//       razorpay_payment_id: response.razorpay_payment_id,
-//       razorpay_signature: response.razorpay_signature,
-//       orderItems,
-//       shippingAddress: shipping,
-//       totalAmount: cartTotal
-//     };
-
-//     const { data } = await verifyPayment(verifyData, token);
-
-//     if (data.success) {
-//       showToast("Payment successful!");
-//       setCart([]);
-//       setCurrentPage("order-success");
-//     }
-
-//   } catch (error) {
-//     console.error("Payment verify error:", error);
-//   }
-
-// },
-
-//         theme: {
-//           color: "#facc15"
-//         }
-//       };
-
-//       const paymentObject = new window.Razorpay(options);
-
-//       paymentObject.open();
-
-//     }
-
-//   } catch (error) {
-//     console.error("Order error:", error);
-//   }
-// };
- 
 
 const placeOrder = async (formData) => {
   //const token = localStorage.getItem("token");
@@ -520,15 +391,12 @@ const placeOrder = async (formData) => {
 
       if (data.success) {
         // ✅ clear cart after success
-       
-       // setCartTotal(0);
-
         // optional: redirect or update UI
-     //   console.log("Order Success:", res.data);
-
-     
+        // console.log("Order Success:", res.data);
+  
         showToast("Order placed successfully!");
         setCart([]);
+        setCheckoutItems([]); 
         setCurrentPage("order-success");
       }
     } catch (error) {
@@ -550,24 +418,23 @@ const fetchAllOrders = async () => {
     console.log("Fetch orders error:", error);
   }
 };
+
 const fetchMyOrders = async () => {
   try {
     const token = localStorage.getItem("token");
-
     const { data } = await getMyOrders(token);
   //   console.log("Orders API response:", data); // DEBUG
-
     if (data.success) {
       setOrders(data.orders);
     }
-      // setOrders(data);
 
   } catch (error) {
     console.log("Fetch my orders error:", error);
   }
 };
+
   const updateOrderStatus = (orderId, newStatus) => {
-    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+    setOrders(prev => prev.map(o => o._id === orderId ? { ...o, status: newStatus } : o));
     showToast(`Order status updated to ${newStatus}`);
   };
 
@@ -576,10 +443,10 @@ const fetchMyOrders = async () => {
     <AppContext.Provider value={{
       user, login, logout, fetchProfile,updateProfile,updatePassword, deleteAccount,
       products,loadProducts, deleteProduct, saveProduct,
-      cart, addToCart, removeFromCart, updateCartQuantity, cartTotal,
+      cart, addToCart, removeFromCart, updateCartQuantity, cartTotal, startCheckout,checkoutItems,
       orders, placeOrder,fetchAllOrders,fetchMyOrders, updateOrderStatus,
       currentPage, setCurrentPage,
-      selectedProductId, setSelectedProductId,selectedProduct,getProductById,
+      selectedProductId, setSelectedProductId,selectedProduct,setSelectedProduct,getProductById,
       showToast, isLoading, setIsLoading,loading,
       searchQuery, setSearchQuery,
       toasts,

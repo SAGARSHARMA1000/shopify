@@ -76,7 +76,7 @@ export default function ResetPassword() {
 
   const resendOTP = async () => {
     try {
-      await API.post("/auth/resend-otp", { email });
+      await API.post("/auth/resendResetotp", { email });
       alert("OTP resent");
       setTimer(30);
     } catch {

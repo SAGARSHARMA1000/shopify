@@ -289,14 +289,14 @@ export default function CartPage() {
     cart,
     removeFromCart,
     updateCartQuantity,
-    setCurrentPage
+    setCurrentPage,startCheckout
   } = useApp();
 
   const [selectedItems, setSelectedItems] = useState([]);
 
   // Select all items by default
   useEffect(() => {
-    setSelectedItems(cart.map((item) => item._id));
+    setSelectedItems([]);
   }, [cart]);
 
   // Toggle single item
@@ -390,7 +390,7 @@ export default function CartPage() {
 
               {/* IMAGE */}
               <img
-                src={item.image}
+                src={item.image[0]}
                 alt=""
                 className="w-24 h-24 object-cover rounded-xl"
               />
@@ -456,7 +456,15 @@ export default function CartPage() {
 
           <button
             disabled={selectedItems.length === 0}
-            onClick={() => setCurrentPage("checkout")}
+           // onClick={() => setCurrentPage("checkout")}
+
+           onClick={() => {
+  const selectedProducts = cart.filter((item) =>
+    selectedItems.includes(item._id)
+  );
+  startCheckout(selectedProducts);
+
+}}
             className={`w-full py-3 rounded-2xl font-semibold flex items-center justify-center gap-2 transition ${
               selectedItems.length === 0
                 ? "bg-gray-700 text-gray-400 cursor-not-allowed"

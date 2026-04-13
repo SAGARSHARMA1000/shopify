@@ -153,26 +153,46 @@ export const addProduct = async (req, res) => {
      const comboProducts = req.body.comboProducts
   ? JSON.parse(req.body.comboProducts)
   : [];
-    let imageUrl = "";
+    let imageUrls = [];
 
-    if (req.file) {
-
+    if (req.files?.images) {
+      for (const file of req.files.images) {
       const result = await new Promise((resolve, reject) => {
 
         const stream = cloudinary.uploader.upload_stream(
-          { folder: "rma-products" },
+          { folder: "rma-products/product-images" },
           (error, result) => {
             if (error) reject(error);
             else resolve(result);
           }
         );
 
-        stream.end(req.file.buffer);
+        stream.end(file.buffer);
       });
 
-      imageUrl = result.secure_url;
+      imageUrls.push(result.secure_url);
     }
+  }
 
+      // ✅ VIDEO
+    let videoUrl = "";
+
+    if (req.files?.video) {
+      const file = req.files.video[0];
+
+      const result = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { resource_type: "video", folder: "rma-products" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        stream.end(file.buffer);
+      });
+
+      videoUrl = result.secure_url;
+    }
     const product = new Product({
       title,
       price,
@@ -182,7 +202,8 @@ export const addProduct = async (req, res) => {
       hotdeal:hotdeal==="true",
       isCombo:isCombo==="true",
       comboProducts,
-      image: imageUrl,
+      image: imageUrls,
+      video: videoUrl,
       createdBy: req.user._id,
     });
 
@@ -269,7 +290,10 @@ export const updateProduct = async (req, res) => {
     product.comboProducts = comboProducts;
 
     // ✅ FIX: handle image from multer
-    if (req.file) {
+    if (req.files?.images) {
+        let imageUrls = [];
+
+  for (const file of req.files.images) {
       const result = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
           { folder: "rma-products" },
@@ -279,11 +303,21 @@ export const updateProduct = async (req, res) => {
           }
         );
 
-        stream.end(req.file.buffer);
-      });
+       imageUrls.push(result.secure_url);
+      });}
 
-      product.image = result.secure_url;
+      product.image =imageUrls;
     }
+    if (req.files?.video) {
+  const file = req.files.video[0];
+
+  const result = await cloudinary.uploader.upload_stream(
+    { resource_type: "video", folder: "rma-products" },
+    (error, result) => result
+  );
+
+  product.video = result.secure_url;
+}
 
     const updatedProduct = await product.save();
 

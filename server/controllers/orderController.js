@@ -60,6 +60,7 @@ export const placeOrder = async (req, res) => {
 const orderItems = JSON.parse(req.body.orderItems || "[]");
 const shippingAddress = JSON.parse(req.body.shippingAddress || "{}");
 const totalAmount = Number(req.body.totalAmount);
+const utr= Number(req.body.utr);
 const paymentMethod = req.body.paymentMethod;
   // console.log("BODY:", req.body);
     if (!orderItems || orderItems.length === 0) {
@@ -73,46 +74,7 @@ const paymentMethod = req.body.paymentMethod;
       });
     }
     
-    // let screenshotUrl = "";
-
-    // // ✅ Upload screenshot ONLY for ONLINE payment
-    // if (paymentMethod === "ONLINE") {
-    //   if (!req.file) {
-    //     return res.status(400).json({
-    //       success: false,
-    //       message: "Payment screenshot required",
-    //     });
-    //   }
-
-    //   // 🔥 Upload to Cloudinary
-    //   const result = await cloudinary.uploader.upload_stream(
-    //     {
-    //       folder: "rma-products",
-    //     },
-    //     async (error, result) => {
-    //       if (error) throw error;
-    //       screenshotUrl = result.secure_url;
-    //     }
-    //   );
-
-    //   // convert buffer → stream
-    //   const streamifier = (await import("streamifier")).default;
-
-    //   await new Promise((resolve, reject) => {
-    //     const stream = cloudinary.uploader.upload_stream(
-    //       { folder: "rma-products" },
-    //       (error, result) => {
-    //         if (error) reject(error);
-    //         else {
-    //           screenshotUrl = result.secure_url;
-    //           resolve(result);
-    //         }
-    //       }
-    //     );
-
-    //     streamifier.createReadStream(req.file.buffer).pipe(stream);
-    //   });
-    // }
+  
        let screenshotUrl = "";
 
 if (paymentMethod === "ONLINE") {
@@ -128,7 +90,7 @@ if (paymentMethod === "ONLINE") {
   try {
     const result = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: "rma-products" },
+        { folder: "rma-products/payments-sc" },
         (error, result) => {
           if (error) return reject(error);
           resolve(result);
@@ -161,7 +123,7 @@ if (paymentMethod === "ONLINE") {
          paymentMethod === "ONLINE" ? "Paid" : "Pending",
 
       orderStatus: "Booked",
-
+      utr,
       // ✅ Save screenshot if exists
       screenshot: screenshotUrl,
     });

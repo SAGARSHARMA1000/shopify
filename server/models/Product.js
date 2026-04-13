@@ -22,9 +22,10 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
+    image: [{
       type: String,
-    },
+    },],
+    video:{type:String,},
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

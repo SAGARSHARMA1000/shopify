@@ -2,7 +2,7 @@ import React from "react";
 import { AppProvider } from "./context/AppContext";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-import Loader from "./components/layout/Loader";
+import Loader from "./utils/Loader";
 import Router from "./components/router/Router";
 import HotDealAdModal from "./components/hotdeals/HotDealAdModal";
 import ToastContainer from "./components/common/ToastContainer";

@@ -341,10 +341,12 @@ export default function AdminProductsPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
-   const [isLoading, setIsLoading] = useState(false);
-
+  
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [videoFile, setVideoFile] = useState(null);
+  const [videoPreview, setVideoPreview] = useState(null);
   const initialForm = {
     title: "",
     price: "",
@@ -359,22 +361,74 @@ export default function AdminProductsPage() {
 
   const [formData, setFormData] = useState(initialForm);
 
-  const openModal = (product = null) => {
+  // const openModal = (product = null) => {
 
-    if (product) {
-      setEditingProduct(product);
-       setFormData({
+  //   if (product) {
+  //     setEditingProduct(product);
+  //      setFormData({
+  //     ...product,
+  //     comboProducts: product.comboProducts || [],
+  //   });
+  //   } else {
+  //     setEditingProduct(null);
+  //     setFormData(initialForm);
+  //   }
+  //   setImageFiles([]); // reset image
+  //   setIsModalOpen(true);
+  // };
+     const openModal = (product = null) => {
+
+  // 🔥 CLEAN OLD PREVIEWS (important)
+  if (imagePreviews?.length) {
+    imagePreviews.forEach((url) => {
+      if (url.startsWith("blob:")) URL.revokeObjectURL(url);
+    });
+  }
+
+  if (videoPreview?.startsWith("blob:")) {
+    URL.revokeObjectURL(videoPreview);
+  }
+
+  if (product) {
+    setEditingProduct(product);
+
+    setFormData({
       ...product,
       comboProducts: product.comboProducts || [],
     });
-    } else {
-      setEditingProduct(null);
-      setFormData(initialForm);
-    }
-    setImageFile(null); // reset image
-    setIsModalOpen(true);
-  };
 
+    // ✅ SHOW EXISTING IMAGES
+    if (product.images && product.images.length > 0) {
+      setImagePreviews(product.images); // already URLs
+    } else if (product.image) {
+      // fallback for old products
+      setImagePreviews([product.image]);
+    } else {
+      setImagePreviews([]);
+    }
+
+    // ✅ SHOW EXISTING VIDEO
+    if (product.video) {
+      setVideoPreview(product.video);
+    } else {
+      setVideoPreview(null);
+    }
+
+  } else {
+    setEditingProduct(null);
+    setFormData(initialForm);
+
+    // ✅ RESET EVERYTHING
+    setImagePreviews([]);
+    setVideoPreview(null);
+  }
+
+  // ✅ always reset files (important)
+  setImageFiles([]);
+  setVideoFile(null);
+
+  setIsModalOpen(true);
+};
   const handleSave = async (e) => {
     e.preventDefault();
      try{
@@ -394,9 +448,13 @@ export default function AdminProductsPage() {
     JSON.stringify(formData.comboProducts)
   );
 
-  if (imageFile) {
-    form.append("image", imageFile);
-  }
+    imageFiles.forEach((file) => {
+  form.append("images", file);
+});
+
+if (videoFile) {
+  form.append("video", videoFile);
+}
 
   await saveProduct(form,editingProduct?._id);
   showToast(editingProduct ? "Product updated ✅" : "Product added successfully✅");
@@ -544,14 +602,14 @@ const handleDelete = async (id) => {
                 <td className="px-6 py-4 flex items-center gap-4">
 
 <img
-  src={product.image}
+  src={product.image[0]}
   alt=""
   className="w-12 h-12 rounded-lg object-cover"
 />
 
-{/* <span className="font-bold text-white">
+<span className="font-bold text-white">
 {product.title}
-</span> */}
+</span>
 
 </td>
 
@@ -678,29 +736,182 @@ const handleDelete = async (id) => {
               /> */}
               <div>
 
-<input
+{/* <input
   type="file"
+  multiple
   accept="image/*"
   className="w-full p-3 bg-black text-white border border-gray-700 rounded-xl"
   onChange={(e) => {
 
-    const file = e.target.files[0];
-    setImageFile(file);
+    const files = Array.from(e.target.files);
+    setImageFiles(files);
+    // generate previews
+    const previews = files.map((file) =>
+      URL.createObjectURL(file)
+    );
 
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
-    }
+    setImagePreviews(previews);
 
   }}
-/>
+/> */}
+ 
+{/* {imagePreviews.length > 0 && (
+  <div className="mt-4 grid grid-cols-3 sm:grid-cols-4 gap-3">
+    {imagePreviews.map((src, index) => (
+      <div key={index} className="relative group">
+        <img
+          src={src}
+          alt="preview"
+          className="w-full h-24 object-cover rounded-lg border border-gray-700"
+        />
 
-{imagePreview && (
-  <img
-    src={imagePreview}
-    alt="preview"
-    className="mt-4 w-32 h-32 object-cover rounded-lg border border-gray-700"
+        {/* remove button */}
+        {/* <button
+          type="button"
+          onClick={() => {
+            const newFiles = imageFiles.filter((_, i) => i !== index);
+            const newPreviews = imagePreviews.filter((_, i) => i !== index);
+
+            setImageFiles(newFiles);
+            setImagePreviews(newPreviews);
+          }}
+          className="absolute top-1 right-1 bg-black/70 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+        >
+          ✕
+        </button>
+      </div>
+    ))}
+  </div>
+)} */}
+    {/* <input
+  type="file"
+  accept="video/*"
+  onChange={(e) => {
+  const file = e.target.files[0];
+    setVideoFile(file);
+
+    if (file) {
+      setVideoPreview(URL.createObjectURL(file));
+    }
+  }} 
+/>
+{videoPreview && (
+  <div className="mt-4">
+    <video
+      src={videoPreview}
+      controls
+      className="w-48 rounded-lg border border-gray-700"
+    />
+  </div>
+)} */} 
+           {/* ================= MEDIA UPLOAD ================= */}
+
+<div className="space-y-4">
+
+  {/* TITLE */}
+  <p className="text-sm font-semibold text-yellow-400">
+    Upload Images (Max 5)
+  </p>
+
+  {/* IMAGE INPUT */}
+  <input
+    type="file"
+    multiple
+    accept="image/*"
+    className="w-full p-3 bg-black text-white border border-gray-700 rounded-xl"
+    onChange={(e) => {
+      const newFiles = Array.from(e.target.files);
+
+       setImageFiles((prev) => [...prev, ...newFiles]);
+      const newPreviews = newFiles.map((file) =>
+        URL.createObjectURL(file)
+      );
+    setImagePreviews((prev) => [...prev, ...newPreviews]);
+     e.target.value = null;
+     // setImagePreviews(previews);
+    }}
   />
-)}
+
+  {/* IMAGE PREVIEW */}
+  {imagePreviews.length > 0 && (
+    <div className="flex gap-3 overflow-x-auto pb-2">
+
+      {imagePreviews.map((src, index) => (
+        <div
+          key={index}
+          className="relative min-w-20 sm:min-w-25 group"
+        >
+          <img
+            src={src}
+            alt="preview"
+            className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg border border-gray-700"
+          />
+
+          {/* REMOVE */}
+          <button
+            type="button"
+            onClick={() => {
+              const newFiles = imageFiles.filter((_, i) => i !== index);
+              const newPreviews = imagePreviews.filter((_, i) => i !== index);
+
+              setImageFiles(newFiles);
+              setImagePreviews(newPreviews);
+            }}
+            className="absolute top-1 right-1 bg-black/70 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {/* ================= VIDEO ================= */}
+
+  <p className="text-sm font-semibold text-yellow-400 mt-4">
+    Upload Product Video
+  </p>
+
+  <input
+    type="file"
+    accept="video/*"
+    className="w-full p-3 bg-black text-white border border-gray-700 rounded-xl"
+    onChange={(e) => {
+      const file = e.target.files[0];
+      setVideoFile(file);
+
+      if (file) {
+        setVideoPreview(URL.createObjectURL(file));
+      }
+    }}
+  />
+
+  {/* VIDEO PREVIEW */}
+  {videoPreview && (
+    <div className="relative w-full max-w-xs mt-3 group">
+
+      <video
+        src={videoPreview}
+        controls
+        className="w-full rounded-lg border border-gray-700"
+      />
+
+      {/* REMOVE VIDEO */}
+      <button
+        type="button"
+        onClick={() => {
+          setVideoFile(null);
+          setVideoPreview(null);
+        }}
+        className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 text-xs rounded opacity-0 group-hover:opacity-100"
+      >
+        Remove
+      </button>
+    </div>
+  )}
+
+</div>
+     
 {formData.isCombo && (
   <div className="mt-4 border p-3 rounded">
     <p className="font-semibold mb-2">Select Products for Combo</p>

@@ -588,7 +588,7 @@ export default function AdminOrdersPage() {
                     {order.shippingAddress?.phone || "No phone"}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    {order.shippingAddress?.address}, {order.shippingAddress?.city} - {order.shippingAddress?.zip}
+                    {order.shippingAddress?.address},{order.shippingAddress?.state},{order.shippingAddress?.landmark}, {order.shippingAddress?.city} - {order.shippingAddress?.zip}
                   </p>
                 </td>
 

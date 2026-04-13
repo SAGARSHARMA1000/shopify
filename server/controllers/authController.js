@@ -86,6 +86,8 @@ const message = `
     res.status(500).json({message:error.message});
   }
 };
+
+
 export const verifyEmailOTP = async (req, res) => {
 
 try {
@@ -357,6 +359,60 @@ export const resetPassword = async (req, res) => {
     res.json({ message: "Password reset successful" });
 
   } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const resendResetOTP = async (req, res) => {
+  try {
+
+    let { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    email = email.toLowerCase().trim();
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      // 🔒 do not reveal user existence
+      return res.json({ message: "If account exists, OTP sent" });
+    }
+
+    // ⛔ Rate limit (30 seconds)
+    if (
+      user.lastOtpSentAt &&
+      Date.now() - user.lastOtpSentAt.getTime() < 30000
+    ) {
+      return res.status(400).json({
+        message: "Please wait 30 seconds before requesting again"
+      });
+    }
+
+    // 🔢 Generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    user.resetOTP = otp;
+    user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
+    user.lastOtpSentAt = new Date();
+
+    await user.save();
+
+    // 📩 Send Email
+    const message = `
+      <h2>Password Reset OTP</h2>
+      <h1>${otp}</h1>
+      <p>This OTP is valid for 10 minutes</p>
+    `;
+
+    await sendEmail(email, "Reset Password OTP", message);
+
+    res.json({ message: "OTP resent successfully" });
+
+  } catch (error) {
+    console.log("RESEND RESET OTP ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
