@@ -346,11 +346,11 @@ export default function ProductDetailsPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [zoom, setZoom] = useState(false);
 
-  useEffect(() => {
-    if (selectedProductId) {
-      getProductById(selectedProductId);
-    }
-  }, [selectedProductId]);
+  // useEffect(() => {
+  //   if (selectedProductId) {
+  //     getProductById(selectedProductId);
+  //   }
+  // }, [selectedProductId]);
 
   const product = selectedProduct;
 

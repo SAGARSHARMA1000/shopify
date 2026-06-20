@@ -111,6 +111,160 @@
 //     </footer>
 //   );
 // }
+// import React from "react";
+// import { useApp } from "../../context/AppContext";
+// import {
+//   Facebook,
+//   Twitter,
+//   Linkedin,
+//   Instagram,
+//   ShoppingBag,
+//   Mail,
+//   Phone,
+//   MapPin
+// } from "lucide-react";
+
+// export default function Footer() {
+//   const { setCurrentPage } = useApp();
+
+//   return (
+//     <footer className="bg-linear-to-b from-black via-gray-900 to-black text-gray-300 mt-auto border-t border-yellow-500/20">
+
+//       {/* ================= TOP GRID ================= */}
+//       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+
+//         {/* BRAND */}
+//         <div>
+//           <h3 className="text-2xl font-bold text-yellow-400 flex items-center gap-2 mb-6">
+//             <ShoppingBag className="w-6 h-6" />
+//             RMA
+//           </h3>
+
+//           <p className="text-gray-400 leading-relaxed mb-6">
+//             Your one-stop destination for premium gadgets, accessories, and smart tech.
+//             Built for performance, style, and reliability.
+//           </p>
+
+//           <div className="space-y-3 text-sm text-gray-400">
+//             <div className="flex items-center gap-2">
+//               <Mail className="w-4 h-4 text-yellow-500" />
+//               support@rma.com
+//             </div>
+//             <div className="flex items-center gap-2">
+//               <Phone className="w-4 h-4 text-yellow-500" />
+//               +91 98765 43210
+//             </div>
+//             <div className="flex items-center gap-2">
+//               <MapPin className="w-4 h-4 text-yellow-500" />
+//               India
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* SHOP */}
+//         <div>
+//           <h4 className="text-white font-semibold text-lg mb-6">Shop</h4>
+//           <ul className="space-y-3">
+//             <li onClick={() => setCurrentPage("home")} className="hover:text-yellow-400 cursor-pointer transition">
+//               All Products
+//             </li>
+//             <li onClick={() => setCurrentPage("hotdeals")} className="hover:text-yellow-400 cursor-pointer transition">
+//               Hot Deals
+//             </li>
+//             <li onClick={() => setCurrentPage("cart")} className="hover:text-yellow-400 cursor-pointer transition">
+//               Cart
+//             </li>
+//             <li onClick={() => setCurrentPage("contact")} className="hover:text-yellow-400 cursor-pointer transition">
+//               Contact
+//             </li>
+//           </ul>
+//         </div>
+
+//         {/* ACCOUNT */}
+//         <div>
+//           <h4 className="text-white font-semibold text-lg mb-6">Account</h4>
+//           <ul className="space-y-3">
+//             <li onClick={() => setCurrentPage("login")} className="hover:text-yellow-400 cursor-pointer transition">
+//               Login
+//             </li>
+//             <li onClick={() => setCurrentPage("signup")} className="hover:text-yellow-400 cursor-pointer transition">
+//               Sign Up
+//             </li>
+//             <li onClick={() => setCurrentPage("signup")} className="hover:text-yellow-400 cursor-pointer transition">
+//               My Dashboard
+//             </li>
+//             <li onClick={() => setCurrentPage("cart")} className="hover:text-yellow-400 cursor-pointer transition">
+//               My Cart
+//             </li>
+//           </ul>
+//         </div>
+
+//         {/* NEWSLETTER */}
+//         <div>
+//           <h4 className="text-white font-semibold text-lg mb-6">Stay Updated</h4>
+
+//           <p className="text-gray-400 text-sm mb-4">
+//             Subscribe to get latest offers, deals and updates.
+//           </p>
+
+//           <div className="flex flex-col sm:flex-row gap-3">
+//             <input
+//               type="email"
+//               placeholder="Enter email"
+//               className="flex-1 px-4 py-2 rounded-full bg-black border border-gray-700 text-white focus:outline-none focus:border-yellow-500"
+//             />
+//             <button className="bg-yellow-500 text-black px-5 py-2 rounded-full font-semibold hover:scale-105 transition">
+//               Subscribe
+//             </button>
+//           </div>
+//         </div>
+
+//       </div>
+
+//       {/* ================= CTA ================= */}
+//       <div className="border-t border-gray-800">
+//         <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+
+//           <h3 className="text-xl md:text-2xl font-semibold text-white">
+//             Join RMA & unlock exclusive deals 🚀
+//           </h3>
+
+//           <button
+//             onClick={() => setCurrentPage("signup")}
+//             className="bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-8 py-3 rounded-full font-bold hover:scale-105 transition shadow-lg shadow-yellow-500/30"
+//           >
+//             SIGN UP
+//           </button>
+
+//         </div>
+//       </div>
+
+//       {/* ================= SOCIAL ================= */}
+//       <div className="border-t border-gray-800">
+//         <div className="max-w-7xl mx-auto px-6 py-8 flex justify-center gap-6">
+
+//           {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
+//             <div
+//               key={i}
+//               className="bg-gray-800 p-4 rounded-full hover:bg-yellow-500 hover:text-black transition cursor-pointer"
+//             >
+//               <Icon />
+//             </div>
+//           ))}
+
+//         </div>
+//       </div>
+
+//       {/* ================= COPYRIGHT ================= */}
+//       <div className="border-t border-gray-800">
+//         <div className="max-w-7xl mx-auto px-6 py-6 text-center text-gray-500 text-sm">
+//           © {new Date().getFullYear()} RMA. All rights reserved. Built for modern e-commerce experience.
+//         </div>
+//       </div>
+
+//     </footer>
+//   );
+// }
 import React from "react";
 import { useApp } from "../../context/AppContext";
 import {
@@ -123,39 +277,61 @@ import {
   Phone,
   MapPin
 } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
+const socialLinks = [
+  {
+    icon: Instagram,
+    url: "https://www.instagram.com/raj_mobile_accessories09?igsh=MXVqdmlnNzJycDduag==",
+    hover: "hover:bg-pink-500"
+  },
+  {
+    icon: FaWhatsapp,
+    url: "https://wa.me/message/SDHRV56OUTECH1",
+    hover: "hover:bg-green-500"
+  },
+  {
+    icon: Facebook,
+    url: "https://facebook.com/your_page",
+    hover: "hover:bg-blue-600"
+  },
+  
+
+];
 
 export default function Footer() {
   const { setCurrentPage } = useApp();
 
   return (
-    <footer className="bg-linear-to-b from-black via-gray-900 to-black text-gray-300 mt-auto border-t border-yellow-500/20">
+    <footer className="overflow-x-hidden bg-linear-to-b from-black via-gray-900 to-black text-gray-300 mt-auto border-t border-yellow-500/20">
 
-      {/* ================= TOP GRID ================= */}
-      <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+      {/* TOP GRID */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
         {/* BRAND */}
-        <div>
+        <div className="min-w-0">
           <h3 className="text-2xl font-bold text-yellow-400 flex items-center gap-2 mb-6">
-            <ShoppingBag className="w-6 h-6" />
+            <ShoppingBag className="w-6 h-6 shrink-0" />
             RMA
           </h3>
 
           <p className="text-gray-400 leading-relaxed mb-6">
-            Your one-stop destination for premium gadgets, accessories, and smart tech.
-            Built for performance, style, and reliability.
+            Your one-stop destination for premium gadgets, accessories, and
+            smart tech. Built for performance, style, and reliability.
           </p>
 
           <div className="space-y-3 text-sm text-gray-400">
             <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-yellow-500" />
-              support@rma.com
+              <Mail className="w-4 h-4 text-yellow-500 shrink-0" />
+              <span className="break-all">support@rma.com</span>
             </div>
+
             <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-yellow-500" />
-              +91 98765 43210
+              <Phone className="w-4 h-4 text-yellow-500 shrink-0" />
+              +91 81093 52129
             </div>
+
             <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-yellow-500" />
+              <MapPin className="w-4 h-4 text-yellow-500 shrink-0" />
               India
             </div>
           </div>
@@ -164,17 +340,33 @@ export default function Footer() {
         {/* SHOP */}
         <div>
           <h4 className="text-white font-semibold text-lg mb-6">Shop</h4>
+
           <ul className="space-y-3">
-            <li onClick={() => setCurrentPage("home")} className="hover:text-yellow-400 cursor-pointer transition">
+            <li
+              onClick={() => setCurrentPage("home")}
+              className="hover:text-yellow-400 cursor-pointer transition"
+            >
               All Products
             </li>
-            <li onClick={() => setCurrentPage("hotdeals")} className="hover:text-yellow-400 cursor-pointer transition">
+
+            <li
+              onClick={() => setCurrentPage("hotdeals")}
+              className="hover:text-yellow-400 cursor-pointer transition"
+            >
               Hot Deals
             </li>
-            <li onClick={() => setCurrentPage("cart")} className="hover:text-yellow-400 cursor-pointer transition">
+
+            <li
+              onClick={() => setCurrentPage("cart")}
+              className="hover:text-yellow-400 cursor-pointer transition"
+            >
               Cart
             </li>
-            <li onClick={() => setCurrentPage("contact")} className="hover:text-yellow-400 cursor-pointer transition">
+
+            <li
+              onClick={() => setCurrentPage("contact")}
+              className="hover:text-yellow-400 cursor-pointer transition"
+            >
               Contact
             </li>
           </ul>
@@ -183,47 +375,65 @@ export default function Footer() {
         {/* ACCOUNT */}
         <div>
           <h4 className="text-white font-semibold text-lg mb-6">Account</h4>
+
           <ul className="space-y-3">
-            <li onClick={() => setCurrentPage("login")} className="hover:text-yellow-400 cursor-pointer transition">
+            <li
+              onClick={() => setCurrentPage("login")}
+              className="hover:text-yellow-400 cursor-pointer transition"
+            >
               Login
             </li>
-            <li onClick={() => setCurrentPage("signup")} className="hover:text-yellow-400 cursor-pointer transition">
+
+            <li
+              onClick={() => setCurrentPage("signup")}
+              className="hover:text-yellow-400 cursor-pointer transition"
+            >
               Sign Up
             </li>
-            <li onClick={() => setCurrentPage("signup")} className="hover:text-yellow-400 cursor-pointer transition">
+
+            <li
+              onClick={() => setCurrentPage("userDashboard")}
+              className="hover:text-yellow-400 cursor-pointer transition"
+            >
               My Dashboard
             </li>
-            <li onClick={() => setCurrentPage("cart")} className="hover:text-yellow-400 cursor-pointer transition">
+
+            <li
+              onClick={() => setCurrentPage("cart")}
+              className="hover:text-yellow-400 cursor-pointer transition"
+            >
               My Cart
             </li>
           </ul>
         </div>
 
         {/* NEWSLETTER */}
-        <div>
-          <h4 className="text-white font-semibold text-lg mb-6">Stay Updated</h4>
+        <div className="min-w-0">
+          <h4 className="text-white font-semibold text-lg mb-6">
+            Stay Updated
+          </h4>
 
           <p className="text-gray-400 text-sm mb-4">
             Subscribe to get latest offers, deals and updates.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col gap-3 w-full">
             <input
               type="email"
               placeholder="Enter email"
-              className="flex-1 px-4 py-2 rounded-full bg-black border border-gray-700 text-white focus:outline-none focus:border-yellow-500"
+              className="w-full min-w-0 px-4 py-3 rounded-full bg-black border border-gray-700 text-white focus:outline-none focus:border-yellow-500"
             />
-            <button className="bg-yellow-500 text-black px-5 py-2 rounded-full font-semibold hover:scale-105 transition">
+
+            <button className="w-full bg-yellow-500 text-black py-3 rounded-full font-semibold hover:scale-[1.02] transition">
               Subscribe
             </button>
           </div>
         </div>
-
       </div>
 
-      {/* ================= CTA ================= */}
+      {/* CTA */}
       <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
 
           <h3 className="text-xl md:text-2xl font-semibold text-white">
             Join RMA & unlock exclusive deals 🚀
@@ -239,26 +449,48 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ================= SOCIAL ================= */}
-      <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-6 py-8 flex justify-center gap-6">
+      {/* SOCIAL */}
+      {/* <div className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex justify-center flex-wrap gap-4">
 
           {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
             <div
               key={i}
               className="bg-gray-800 p-4 rounded-full hover:bg-yellow-500 hover:text-black transition cursor-pointer"
             >
-              <Icon />
+              <Icon size={20} />
             </div>
           ))}
 
         </div>
-      </div>
+      </div> */}
+       {/* SOCIAL */}
+<div className="border-t border-gray-800">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex justify-center flex-wrap gap-4">
 
-      {/* ================= COPYRIGHT ================= */}
+    {socialLinks.map((item, index) => {
+      const Icon = item.icon;
+
+      return (
+        <a
+          key={index}
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`bg-gray-800 p-4 rounded-full transition-all duration-300 cursor-pointer hover:text-white hover:-translate-y-1 ${item.hover}`}
+        >
+          <Icon size={20} />
+        </a>
+      );
+    })}
+
+  </div>
+</div>
+      {/* COPYRIGHT */}
       <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-6 py-6 text-center text-gray-500 text-sm">
-          © {new Date().getFullYear()} RMA. All rights reserved. Built for modern e-commerce experience.
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-center text-gray-500 text-sm">
+          © {new Date().getFullYear()} RMA. All rights reserved. Built for
+          modern e-commerce experience.
         </div>
       </div>
 

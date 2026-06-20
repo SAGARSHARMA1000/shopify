@@ -260,7 +260,7 @@ export default function Navbar() {
             onClick={() => setCurrentPage("home")}
             className="hover:text-yellow-400 transition font-medium"
           >
-            Shop
+            Home
           </button>
 
           {/* <button
@@ -606,7 +606,7 @@ export default function Navbar() {
         }}
         className="w-full text-left p-3 rounded-lg hover:bg-gray-900"
       >
-         Shop
+         Home
       </button>
 
       {/* <button
@@ -627,6 +627,15 @@ export default function Navbar() {
         className="w-full text-left p-3 rounded-lg text-yellow-500 font-semibold hover:bg-gray-900"
       >
         🔥 Hot Deals
+      </button>
+        <button
+        onClick={() => {
+          openHotDealAd();
+          closeMenu();
+        }}
+        className="w-full text-left p-3 rounded-lg text-yellow-500 font-semibold hover:bg-gray-900"
+      >
+        <Tag className="w-4 h-4" />
       </button>
 
       <button

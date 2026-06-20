@@ -156,7 +156,7 @@ export default function HomePage() {
     addToCart,
     setCurrentPage,
     startCheckout,
-    searchQuery,user,showToast,selectedProduct
+    searchQuery,user,showToast,selectedProduct, setSelectedProduct
   } = useApp();
 
   const [activeCategory, setActiveCategory] = useState("All");
@@ -273,6 +273,7 @@ const categories = [
     <button
       onClick={() => {
        // selectedProduct(product._id);
+        setSelectedProduct(product);
        // console.log("Clicked ID:", product._id);
         setCurrentPage("product-details");
       }}

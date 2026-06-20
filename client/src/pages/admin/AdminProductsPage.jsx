@@ -334,7 +334,7 @@
 import React, { useState } from "react";
 import { useApp } from "../../context/AppContext";
 import { PlusCircle, Edit, Trash2, X } from "lucide-react";
-
+import Loader from "../../utils/Loader";
 export default function AdminProductsPage() {
 
   const { products, deleteProduct, saveProduct ,setCurrentPage,currentPage,setProducts,showToast} = useApp();
@@ -377,7 +377,7 @@ export default function AdminProductsPage() {
   //   setIsModalOpen(true);
   // };
      const openModal = (product = null) => {
-
+    console.log(imagePreviews);
   // 🔥 CLEAN OLD PREVIEWS (important)
   if (imagePreviews?.length) {
     imagePreviews.forEach((url) => {
@@ -646,10 +646,10 @@ const handleDelete = async (id) => {
 
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
 
-          <div className="bg-gray-900 border border-gray-800 w-full max-w-xl rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+          <div className="relative bg-gray-900 border border-gray-800 w-full max-w-xl rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
 
             <div className="flex justify-between items-center mb-8">
-
+                {isLoading && <Loader />}
               <h3 className="text-2xl font-black text-yellow-400">
                 {editingProduct ? "Edit Product" : "Add Product"}
               </h3>
