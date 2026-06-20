@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useEffect,} from "react";
 import { X } from "lucide-react";
 import { useApp } from "../../context/AppContext";
 
@@ -8,11 +8,21 @@ export default function HotDealAdModal() {
     latestHotDeal,
     showHotDealAd,
     setShowHotDealAd,
-    setSelectedProductId,
+    setSelectedProductId,setSelectedProduct,
     setCurrentPage
   } = useApp();
 
   if (!showHotDealAd || !latestHotDeal) return null;
+
+  useEffect(() => {
+  if (!showHotDealAd) return;
+
+  const timer = setTimeout(() => {
+    setShowHotDealAd(false);
+  }, 10000);
+
+  return () => clearTimeout(timer);
+}, [showHotDealAd]);
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center px-4">
@@ -32,7 +42,7 @@ export default function HotDealAdModal() {
 
         {/* Image */}
         <img
-          src={latestHotDeal.image[0]}
+          src={latestHotDeal.image?.[0]}
           alt={latestHotDeal.title}
           className="w-full h-72 object-cover"
         />
@@ -54,13 +64,13 @@ export default function HotDealAdModal() {
 
           <button
             onClick={() => {
-              setSelectedProductId(latestHotDeal._id);
+              setSelectedProduct(latestHotDeal);
               setShowHotDealAd(false);
               setCurrentPage("product-details");
             }}
             className="bg-yellow-500 text-black px-6 py-3 rounded-xl font-bold hover:bg-yellow-400 transition"
           >
-            View Deal
+            View Deal →
           </button>
 
         </div>

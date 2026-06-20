@@ -578,7 +578,7 @@ export const updateProduct = async (req, res) => {
   for (const file of req.files.images) {
       const result = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
-          { folder: "rma-products" },
+          { folder: "rma-products/product-images" },
           (error, result) => {
             if (error) reject(error);
             else resolve(result);
@@ -595,7 +595,7 @@ export const updateProduct = async (req, res) => {
   const file = req.files.video[0];
 
   const result = await cloudinary.uploader.upload_stream(
-    { resource_type: "video", folder: "rma-products" },
+    { resource_type: "video", folder: "rma-products/product-videos" },
     (error, result) => result
   );
 
