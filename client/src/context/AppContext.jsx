@@ -3,7 +3,7 @@ import { getEffectivePrice } from "../utils/helpers";
 import {
   fetchProducts,fetchProductById,
   createProduct,updateProduct,deleteProductApi,fetchHotDeals, fetchLatestHotDeal} from "../api/productApi";
-import { placeCODOrder,createOnlineOrder, getAllOrders,getMyOrders } from "../api/orderApi";
+import { placeCODOrder,createOnlineOrder, getAllOrders,getMyOrders,updateOrderStatusApi } from "../api/orderApi";
 import loadRazorpay from "../utils/loadRazorpay";
 import { getHotDealBanner } from "../api/hotDealApi";
 import { loginUser,getProfileApi,updateProfileApi,changePasswordApi,deleteAccountApi } from "../api/authApi";
@@ -180,12 +180,12 @@ const deleteAccount = async () => {
  
   const getProductById = async (id) => {
      try {
-    //console.log("Fetching product ID:", id);
+   // console.log("Fetching product ID:", id);
 
     const { data } = await fetchProductById(id);
 
     // ✅ CORRECT DEBUG
-    //console.log("API RESPONSE:", data);
+    console.log("API RESPONSE:", data);
     //console.log("IMAGES FIELD:", data.images);
     //console.log("IMAGES TYPE:", typeof data.images);
     //console.log("IS ARRAY:", Array.isArray(data.images));
@@ -433,10 +433,33 @@ const fetchMyOrders = async () => {
   }
 };
 
-  const updateOrderStatus = (orderId, newStatus) => {
-    setOrders(prev => prev.map(o => o._id === orderId ? { ...o, status: newStatus } : o));
-    showToast(`Order status updated to ${newStatus}`);
-  };
+const updateOrderStatus = async (orderId, status) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const { data } = await updateOrderStatusApi(
+      orderId,
+      status,
+      token
+    );
+
+    if (data.success) {
+
+      setOrders(prev =>
+        prev.map(order =>
+          order._id === orderId
+            ? { ...order, orderStatus: status }
+            : order
+        )
+      );
+
+      showToast("Status updated");
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
   return (

@@ -154,7 +154,7 @@ export default function HomePage() {
   const {
     products,
     addToCart,
-    setCurrentPage,
+    setCurrentPage, getProductById,
     startCheckout,
     searchQuery,user,showToast,selectedProduct, setSelectedProduct
   } = useApp();
@@ -189,7 +189,7 @@ const categories = [
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between p-10 md:p-16 gap-10">
 
           {/* Left Content */}
-          <div className="max-w-xl space-y-6">
+          {/* <div className="max-w-xl space-y-6">
 
             <div className="flex items-center gap-3">
               <Sparkles className="text-yellow-400" />
@@ -213,8 +213,82 @@ const categories = [
             >
               Explore Collection
             </button>
-          </div>
+          </div> */}
+            <div className="max-w-xl space-y-6 relative">
 
+  {/* Floating Glow */}
+  <div className="absolute -top-10 -left-10 w-40 h-40 bg-yellow-500/10 blur-3xl rounded-full animate-pulse"></div>
+  <div className="absolute bottom-0 right-0 w-32 h-32 bg-yellow-400/10 blur-3xl rounded-full animate-pulse"></div>
+
+  {/* Premium Tag */}
+  <div className="flex items-center gap-3 group">
+    <div className="relative">
+      <Sparkles className="text-yellow-400 animate-pulse" />
+      <span className="absolute inset-0 bg-yellow-400 blur-xl opacity-40"></span>
+    </div>
+
+    <div>
+      <span className="uppercase tracking-widest text-yellow-400 text-sm font-bold">
+        Premium Collection
+      </span>
+
+      <div className="h-0.5 w-0 group-hover:w-full bg-yellow-400 transition-all duration-700"></div>
+    </div>
+  </div>
+
+  {/* Heading */}
+  <div className="space-y-2">
+    <h1 className="text-4xl md:text-6xl font-extrabold leading-tight animate-[fadeIn_1s_ease]">
+
+      Elevate Your
+
+      <span className="relative ml-3 inline-block text-yellow-400">
+
+        Mobile Style
+
+        {/* Shimmer */}
+        <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/40 to-transparent -skew-x-12 animate-[shimmer_3s_linear_infinite]"></span>
+
+      </span>
+
+    </h1>
+
+    {/* Animated line */}
+    <div className="w-28 h-1 rounded-full bg-linear-to-r from-yellow-500 to-transparent animate-pulse"></div>
+  </div>
+
+  {/* Description */}
+  <p className="text-gray-300 text-lg leading-relaxed">
+    Discover high-quality mobile accessories & gadgets crafted with
+    performance, elegance and innovation.
+  </p>
+
+  {/* Button */}
+  <div className="relative inline-block">
+
+    {/* Pulsing Ring */}
+    <span className="absolute inset-0 rounded-full bg-yellow-500 opacity-30 animate-ping"></span>
+
+    <button
+      onClick={() => setCurrentPage("hotdeals")}
+      className="relative overflow-hidden group bg-linear-to-r from-yellow-500 to-yellow-400 text-black px-8 py-3 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg shadow-yellow-500/40"
+    >
+
+      <span className="relative z-10 flex items-center gap-2">
+        Explore Collection
+
+        <span className="group-hover:translate-x-2 transition-transform duration-300">
+          →
+        </span>
+      </span>
+
+      {/* Shine */}
+      <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-white/30 to-transparent"></span>
+
+    </button>
+
+  </div>
+</div>
           {/* Right Logo */}
           <div className="relative">
             <img
@@ -273,7 +347,8 @@ const categories = [
     <button
       onClick={() => {
        // selectedProduct(product._id);
-        setSelectedProduct(product);
+       // setSelectedProduct(product);
+         getProductById(product._id);
        // console.log("Clicked ID:", product._id);
         setCurrentPage("product-details");
       }}

@@ -24,3 +24,13 @@ export const getAllOrders = (token) =>
   API.get("/orders", {
     headers: { Authorization: `Bearer ${token}` },
   });
+  export const updateOrderStatusApi = (id, status, token) =>
+  API.put(
+    `/orders/${id}/status`,
+    { status },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );

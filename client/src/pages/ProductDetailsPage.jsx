@@ -353,7 +353,7 @@ export default function ProductDetailsPage() {
   // }, [selectedProductId]);
 
   const product = selectedProduct;
-
+  // console.log(product.comboProducts);
   if (!product) {
     return (
       <div className="text-white text-center py-20">
@@ -558,7 +558,7 @@ imagesArray.forEach((img) => {
                     className="bg-black border border-gray-700 rounded-xl p-2 text-center"
                   >
                     <img
-                      src={item.image}
+                      src={item.image?.[0]}
                       className="w-full h-20 object-cover rounded-md mb-2"
                     />
                     <p className="text-xs font-semibold line-clamp-1">

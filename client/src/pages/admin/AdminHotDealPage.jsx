@@ -24,6 +24,7 @@ export default function AdminHotDealPage() {
       setExisting(data);
       setPreview(data?.bannerImage);
       setTicker(data?.tickerText || "");
+      
     } catch (err) {
       console.log(err);
     }
@@ -76,11 +77,14 @@ const handleDelete = async () => {
     <div className="min-h-screen bg-black text-white px-4 py-10">
 
       {/* Glow */}
-      <div className="absolute w-72 h-72 bg-yellow-500/10 blur-3xl rounded-full top-10 left-10"></div>
+      {/* <div className="absolute w-72 h-72 bg-yellow-500/10 blur-3xl rounded-full top-10 left-10"></div> */}
 
       <div className="max-w-4xl mx-auto">
                <button
-            onClick={() => setCurrentPage("admin-dashboard")}
+               type="button"
+              
+            onClick={() => {console.log("Back clicked");
+            setCurrentPage("admin-dashboard")}}
             className="flex items-center gap-2 bg-gray-800 hover:bg-yellow-500 hover:text-black px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-bold transition"
           >
             <ArrowLeft size={18} />

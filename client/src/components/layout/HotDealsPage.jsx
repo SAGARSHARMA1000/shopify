@@ -262,6 +262,194 @@
 //   );
 // }
 
+// import React, { useEffect } from "react";
+// import { useApp } from "../../context/AppContext";
+
+// export default function HotDealsPage() {
+//   const {
+//     hotDeals,
+//     getHotDealsProducts,
+//     setSelectedProduct,
+//     setCurrentPage,
+//     hotDealBanner,
+//     fetchHotDealBanner,
+//   } = useApp();
+
+//   useEffect(() => {
+//     getHotDealsProducts();
+//     fetchHotDealBanner();
+//   }, []);
+
+//   return (
+//     <div className="max-w-7xl mx-auto px-3 sm:px-4 py-8 text-white">
+
+//       {/* Heading */}
+//       <div className="mb-8">
+//         <h1 className="text-4xl md:text-5xl font-black text-yellow-400">
+//           🔥 Flash Deals
+//         </h1>
+
+//         <p className="text-gray-400 mt-2">
+//           Limited time offers on trending products
+//         </p>
+//       </div>
+
+//       {/* Banner */}
+//       {hotDealBanner?.bannerImage && (
+//         <div className="relative mb-8 rounded-3xl overflow-hidden shadow-xl">
+
+//           <img
+//             src={hotDealBanner.bannerImage}
+//             alt="Hot Deals Banner"
+//             className="w-full h-40 sm:h-60 md:h-72 lg:h-80 object-cover"
+//           />
+
+//           <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent"></div>
+
+//           {/* <div className="absolute bottom-5 left-5">
+//             <h2 className="text-2xl md:text-5xl font-black text-yellow-400">
+//               🔥 Hot Deals
+//             </h2>
+
+//             <p className="text-gray-300 mt-2">
+//               Grab your favourite products before they're gone
+//             </p>
+//           </div> */}
+
+//         </div>
+//       )}
+
+//       {/* Ticker */}
+//       {hotDealBanner?.tickerText && (
+//         <div className="bg-yellow-500 text-black font-bold py-3 rounded-xl mb-10 overflow-hidden whitespace-nowrap">
+//           <div className="animate-marquee">
+//             {hotDealBanner.tickerText} 🚀 {hotDealBanner.tickerText} 🚀{" "}
+//             {hotDealBanner.tickerText}
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Empty State */}
+//       {hotDeals.length === 0 && (
+//         <div className="py-28 text-center">
+
+//           <div className="text-8xl mb-5">
+//             🔥
+//           </div>
+
+//           <h2 className="text-3xl font-bold text-gray-300">
+//             No Hot Deals Available
+//           </h2>
+
+//           <p className="text-gray-500 mt-3">
+//             New offers will appear soon.
+//           </p>
+
+//         </div>
+//       )}
+
+//       {/* Products */}
+//       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+//         {hotDeals.map((product) => {
+
+//           const originalPrice =
+//             product.discount > 0
+//               ? Math.round(product.price / (1 - product.discount / 100))
+//               : product.price;
+
+//           return (
+//             <div
+//               key={product._id}
+//               onClick={() => {
+//                 setSelectedProduct(product);
+//                 setCurrentPage("product-details");
+//               }}
+//               className="
+//               cursor-pointer
+//               group
+//               bg-gray-900
+//               border
+//               border-gray-800
+//               rounded-3xl
+//               overflow-hidden
+//               shadow-xl
+//               hover:border-yellow-500
+//               hover:-translate-y-2
+//               hover:shadow-yellow-500/20
+//               duration-300
+//               "
+//             >
+//               {/* Badge */}
+//               <div className="absolute z-10 m-3">
+//                 <span className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+//                   🔥 HOT DEAL
+//                 </span>
+//               </div>
+
+//               {/* Image */}
+//               <div className="overflow-hidden">
+//                 <img
+//                   src={product.images?.[0] || product.image?.[0]}
+//                   alt={product.title}
+//                   className="w-full h-40 sm:h-52 object-cover group-hover:scale-110 duration-500"
+//                 />
+//               </div>
+
+//               {/* Content */}
+//               <div className="p-4">
+
+//                 <h3 className="font-bold text-white line-clamp-2 min-h-[50px]">
+//                   {product.title}
+//                 </h3>
+
+//                 {/* Price */}
+//                 <div className="flex flex-wrap items-center gap-2 mt-3">
+
+//                   {product.discount > 0 && (
+//                     <span className="text-gray-500 line-through text-sm">
+//                       ₹{originalPrice}
+//                     </span>
+//                   )}
+
+//                   <span className="text-yellow-400 text-2xl font-black">
+//                     ₹{product.price}
+//                   </span>
+
+//                   {product.discount > 0 && (
+//                     <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+//                       {product.discount}% OFF
+//                     </span>
+//                   )}
+//                 </div>
+
+//                 {/* Button */}
+//                 <button
+//                   className="
+//                   pointer-events-none
+//                   mt-5
+//                   w-full
+//                   py-3
+//                   rounded-2xl
+//                   font-bold
+//                   text-black
+//                   bg-gradient-to-r
+//                   from-yellow-500
+//                   to-yellow-400
+//                   "
+//                 >
+//                   View Deal →
+//                 </button>
+
+//               </div>
+
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// }
 import React, { useEffect } from "react";
 import { useApp } from "../../context/AppContext";
 
@@ -269,7 +457,7 @@ export default function HotDealsPage() {
   const {
     hotDeals,
     getHotDealsProducts,
-    setSelectedProduct,
+    setSelectedProduct, getProductById,
     setCurrentPage,
     hotDealBanner,
     fetchHotDealBanner,
@@ -281,47 +469,34 @@ export default function HotDealsPage() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-8 text-white">
-
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8 text-white">
       {/* Heading */}
-      <div className="mb-8">
-        <h1 className="text-4xl md:text-5xl font-black text-yellow-400">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-yellow-400">
           🔥 Flash Deals
         </h1>
 
-        <p className="text-gray-400 mt-2">
+        <p className="text-sm sm:text-base text-gray-400 mt-2">
           Limited time offers on trending products
         </p>
       </div>
 
       {/* Banner */}
       {hotDealBanner?.bannerImage && (
-        <div className="relative mb-8 rounded-3xl overflow-hidden shadow-xl">
-
+        <div className="relative mb-6 sm:mb-8 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl">
           <img
             src={hotDealBanner.bannerImage}
             alt="Hot Deals Banner"
-            className="w-full h-40 sm:h-60 md:h-72 lg:h-80 object-cover"
+            className="w-full h-36 sm:h-52 md:h-64 lg:h-80 object-cover"
           />
 
           <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent"></div>
-
-          {/* <div className="absolute bottom-5 left-5">
-            <h2 className="text-2xl md:text-5xl font-black text-yellow-400">
-              🔥 Hot Deals
-            </h2>
-
-            <p className="text-gray-300 mt-2">
-              Grab your favourite products before they're gone
-            </p>
-          </div> */}
-
         </div>
       )}
 
       {/* Ticker */}
       {hotDealBanner?.tickerText && (
-        <div className="bg-yellow-500 text-black font-bold py-3 rounded-xl mb-10 overflow-hidden whitespace-nowrap">
+        <div className="bg-yellow-500 text-black font-bold py-2 sm:py-3 rounded-xl mb-6 sm:mb-10 overflow-hidden whitespace-nowrap text-xs sm:text-sm md:text-base">
           <div className="animate-marquee">
             {hotDealBanner.tickerText} 🚀 {hotDealBanner.tickerText} 🚀{" "}
             {hotDealBanner.tickerText}
@@ -331,28 +506,22 @@ export default function HotDealsPage() {
 
       {/* Empty State */}
       {hotDeals.length === 0 && (
-        <div className="py-28 text-center">
+        <div className="py-20 sm:py-28 text-center">
+          <div className="text-6xl sm:text-8xl mb-5">🔥</div>
 
-          <div className="text-8xl mb-5">
-            🔥
-          </div>
-
-          <h2 className="text-3xl font-bold text-gray-300">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-300">
             No Hot Deals Available
           </h2>
 
-          <p className="text-gray-500 mt-3">
+          <p className="text-sm sm:text-base text-gray-500 mt-3">
             New offers will appear soon.
           </p>
-
         </div>
       )}
 
       {/* Products */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
         {hotDeals.map((product) => {
-
           const originalPrice =
             product.discount > 0
               ? Math.round(product.price / (1 - product.discount / 100))
@@ -362,16 +531,18 @@ export default function HotDealsPage() {
             <div
               key={product._id}
               onClick={() => {
-                setSelectedProduct(product);
+                getProductById(product._id);
+                //setSelectedProduct(product);
                 setCurrentPage("product-details");
               }}
               className="
+              relative
               cursor-pointer
               group
               bg-gray-900
               border
               border-gray-800
-              rounded-3xl
+              rounded-2xl sm:rounded-3xl
               overflow-hidden
               shadow-xl
               hover:border-yellow-500
@@ -381,8 +552,8 @@ export default function HotDealsPage() {
               "
             >
               {/* Badge */}
-              <div className="absolute z-10 m-3">
-                <span className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+              <div className="absolute z-10 m-2 sm:m-3">
+                <span className="bg-red-500 text-white px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold animate-pulse">
                   🔥 HOT DEAL
                 </span>
               </div>
@@ -392,32 +563,30 @@ export default function HotDealsPage() {
                 <img
                   src={product.images?.[0] || product.image?.[0]}
                   alt={product.title}
-                  className="w-full h-40 sm:h-52 object-cover group-hover:scale-110 duration-500"
+                  className="w-full h-32 sm:h-44 md:h-52 object-cover group-hover:scale-110 duration-500"
                 />
               </div>
 
               {/* Content */}
-              <div className="p-4">
-
-                <h3 className="font-bold text-white line-clamp-2 min-h-[50px]">
+              <div className="p-3 sm:p-4">
+                <h3 className="font-bold text-white text-sm sm:text-base line-clamp-2 min-h-10 sm:min-h-12.5">
                   {product.title}
                 </h3>
 
                 {/* Price */}
-                <div className="flex flex-wrap items-center gap-2 mt-3">
-
+                <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-2 sm:mt-3">
                   {product.discount > 0 && (
-                    <span className="text-gray-500 line-through text-sm">
+                    <span className="text-gray-500 line-through text-xs sm:text-sm">
                       ₹{originalPrice}
                     </span>
                   )}
 
-                  <span className="text-yellow-400 text-2xl font-black">
+                  <span className="text-yellow-400 text-lg sm:text-2xl font-black">
                     ₹{product.price}
                   </span>
 
                   {product.discount > 0 && (
-                    <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                    <span className="bg-green-500 text-white text-[10px] sm:text-xs px-2 py-1 rounded-full font-bold">
                       {product.discount}% OFF
                     </span>
                   )}
@@ -427,22 +596,21 @@ export default function HotDealsPage() {
                 <button
                   className="
                   pointer-events-none
-                  mt-5
+                  mt-3 sm:mt-5
                   w-full
-                  py-3
-                  rounded-2xl
+                  py-2.5 sm:py-3
+                  rounded-xl sm:rounded-2xl
+                  text-sm sm:text-base
                   font-bold
                   text-black
-                  bg-gradient-to-r
+                  bg-linear-to-r
                   from-yellow-500
                   to-yellow-400
                   "
                 >
                   View Deal →
                 </button>
-
               </div>
-
             </div>
           );
         })}

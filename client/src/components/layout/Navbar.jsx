@@ -628,15 +628,7 @@ export default function Navbar() {
       >
         🔥 Hot Deals
       </button>
-        <button
-        onClick={() => {
-          openHotDealAd();
-          closeMenu();
-        }}
-        className="w-full text-left p-3 rounded-lg text-yellow-500 font-semibold hover:bg-gray-900"
-      >
-        <Tag className="w-4 h-4" />
-      </button>
+
 
       <button
         onClick={() => {
@@ -681,9 +673,10 @@ export default function Navbar() {
               logout();
               closeMenu();
             }}
-            className="w-full text-left p-3 rounded-lg text-red-500 hover:bg-gray-900"
+            className="w-full text-left p-3 rounded-lg text-red-500 hover:bg-gray-900 flex items-center gap-3"
           >
-             Logout
+             <LogOut size={18} />
+             <span>Logout</span>
           </button>
         </>
       ) : (

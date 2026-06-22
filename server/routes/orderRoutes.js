@@ -4,7 +4,7 @@ import {
   createOnlinePayment,
   verifyOnlinePayment,
   getMyOrders,
-  getAllOrders
+  getAllOrders, updateOrderStatus
 } from "../controllers/orderController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -31,5 +31,6 @@ router.get("/my", protect, getMyOrders);
 // Admin: Get all orders
 // GET /api/orders
 router.get("/", protect, adminOnly, getAllOrders);
+router.put("/:id/status", protect, adminOnly, updateOrderStatus);
 
 export default router;

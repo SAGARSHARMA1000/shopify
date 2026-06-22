@@ -6,7 +6,7 @@ export default function HotDealAdModal() {
 
   const {
     latestHotDeal,
-    showHotDealAd,
+    showHotDealAd, getProductById,
     setShowHotDealAd,
     setSelectedProductId,setSelectedProduct,
     setCurrentPage
@@ -64,7 +64,8 @@ export default function HotDealAdModal() {
 
           <button
             onClick={() => {
-              setSelectedProduct(latestHotDeal);
+             // setSelectedProduct(latestHotDeal);
+              getProductById(latestHotDeal._id);
               setShowHotDealAd(false);
               setCurrentPage("product-details");
             }}

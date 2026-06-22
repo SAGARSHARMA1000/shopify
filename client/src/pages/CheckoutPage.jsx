@@ -579,6 +579,7 @@ export default function CheckoutPage() {
   });
 
   const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [screenshot, setScreenshot] = useState(null);
   const [utr, setUtr] = useState("");
   const items = checkoutItems || [];
@@ -602,7 +603,8 @@ const selectedTotal = items.reduce((acc, item) => {
       alert("Please upload payment screenshot");
       return;
     }
-
+    try{
+    setIsPlacingOrder(true);  
     const formData = new FormData();
     formData.append("shippingAddress", JSON.stringify(shipping));
     formData.append(
@@ -625,6 +627,11 @@ const selectedTotal = items.reduce((acc, item) => {
     if (screenshot) formData.append("screenshot", screenshot);
 
     await placeOrder(formData);
+    } catch (error) {
+    console.log(error);
+  } finally {
+    setIsPlacingOrder(false);
+  }
   };
 
   return (
@@ -757,7 +764,7 @@ const selectedTotal = items.reduce((acc, item) => {
             <div className="bg-black border border-gray-700 rounded-2xl p-5 text-center space-y-4">
 
               <p className="text-yellow-400 font-bold text-lg">
-                Pay ₹{cartTotal.toFixed(2)}
+                Pay ₹{selectedTotal.toFixed(2)}
               </p>
 
               <img
@@ -793,11 +800,37 @@ const selectedTotal = items.reduce((acc, item) => {
           )}
 
           {/* BUTTON */}
-          <button className="w-full bg-linear-to-r from-yellow-500 to-yellow-400 text-black py-4 rounded-2xl font-bold text-lg hover:scale-[1.02] transition">
+          {/* <button className="w-full bg-linear-to-r from-yellow-500 to-yellow-400 text-black py-4 rounded-2xl font-bold text-lg hover:scale-[1.02] transition">
             {paymentMethod === "COD"
               ? "Place Order"
-              : `Confirm Payment ₹${cartTotal.toFixed(2)}`}
-          </button>
+              : `Confirm Payment ₹${selectedTotal.toFixed(2)}`}
+          </button> */}
+            <button
+  disabled={isPlacingOrder}
+  className={`
+    w-full py-4 rounded-2xl font-bold text-lg
+    transition-all duration-300
+    ${
+      isPlacingOrder
+        ? "bg-yellow-500 animate-pulse cursor-not-allowed"
+        : "bg-linear-to-r from-yellow-500 to-yellow-400 text-black hover:scale-[1.02]"
+    }
+  `}
+>
+  {isPlacingOrder ? (
+    <div className="flex items-center justify-center gap-3">
+      <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+
+      {paymentMethod === "COD"
+        ? "Placing Order..."
+        : "Processing Payment..."}
+    </div>
+  ) : paymentMethod === "COD" ? (
+    "Place Order"
+  ) : (
+    `Confirm Payment ₹${selectedTotal.toFixed(2)}`
+  )}
+</button>
         </form>
 
         {/* ================= RIGHT: SUMMARY ================= */}

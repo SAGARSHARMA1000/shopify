@@ -271,9 +271,13 @@ useEffect(() => {
 
               <div>
                 <p className="text-xs text-gray-400">Order ID</p>
-                <p className="text-xs sm:text-sm text-gray-300 break-all">
+                {/* <p className="text-xs sm:text-sm text-gray-300 break-all">
                   {order._id}
-                </p>
+                </p> */}
+                <p className="text-xs sm:text-sm text-gray-300 font-medium tracking-wider">
+  ORD-{new Date(order.createdAt).getFullYear()}-
+  {order._id.slice(-5).toUpperCase()}
+</p>
 
                 <p className="text-xs text-gray-500 mt-1">
                   {new Date(order.createdAt).toLocaleDateString()}
@@ -325,7 +329,7 @@ useEffect(() => {
                   {/* Info */}
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-white">
-                      {item.name}
+                      {item.title}
                     </p>
 
                     <p className="text-xs text-gray-400">
