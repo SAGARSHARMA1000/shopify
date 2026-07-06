@@ -377,17 +377,17 @@ export default function AdminProductsPage() {
   //   setIsModalOpen(true);
   // };
      const openModal = (product = null) => {
-    console.log(imagePreviews);
+   // console.log(imagePreviews);
   // 🔥 CLEAN OLD PREVIEWS (important)
-  if (imagePreviews?.length) {
-    imagePreviews.forEach((url) => {
-      if (url.startsWith("blob:")) URL.revokeObjectURL(url);
-    });
-  }
+  // if (imagePreviews?.length) {
+  //   imagePreviews.forEach((url) => {
+  //     if (url.startsWith("blob:")) URL.revokeObjectURL(url);
+  //   });
+  // }
 
-  if (videoPreview?.startsWith("blob:")) {
-    URL.revokeObjectURL(videoPreview);
-  }
+  // if (videoPreview?.startsWith("blob:")) {
+  //   URL.revokeObjectURL(videoPreview);
+  // }
 
   if (product) {
     setEditingProduct(product);

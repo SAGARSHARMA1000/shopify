@@ -342,7 +342,7 @@ const saveProduct = async (product,id=null) => {
         setProducts(prev=>prev.map((p) =>
           p._id === data._id ? data : p
         ));
-        showToast("Product added successfully");
+      //  showToast("Product added successfully");
         setCurrentPage("admin-products");
 
       } else {
